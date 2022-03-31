@@ -83,7 +83,8 @@ class Product extends Model {
         'details',
         'weight',
         'is_sho_by_look',
-        'care'
+        'care',
+        'need_help'
     ];
 
     protected $append = [

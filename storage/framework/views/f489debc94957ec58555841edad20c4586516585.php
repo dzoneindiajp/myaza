@@ -78,7 +78,8 @@ if (count($info['variations']) > 0) {
                                     href="<?php echo e(url('/')); ?>/<?php echo e($info['child_category_slug']); ?>" rel="home"><span
                                         itemprop="name"><?php echo $info['child_category']; ?></span></a></li>
                             <?php } ?>
-                            <li class="breadcrumb-item trail-end"><span itemprop="name"><?php echo e($info['name']); ?></span></li>
+                            <li class="breadcrumb-item trail-end"><span itemprop="name"><?php echo e($info['name']); ?></span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -123,7 +124,8 @@ if (count($info['variations']) > 0) {
                                     </div>
                                     <div class="product-summary-cart">
                                         <form class="variations-form addcart" action="#" method="post">
-                                            <input type="hidden" name="_token" id="_token" value="<?php echo e(csrf_token()); ?>">
+                                            <input type="hidden" name="_token" id="_token"
+                                                value="<?php echo e(csrf_token()); ?>">
                                             <div class="product-summary-attribute">
                                                 <input type="hidden" name="variation_id" id="variation_id"
                                                     value="<?php echo $variatinid; ?>">
@@ -383,84 +385,121 @@ if (count($info['variations']) > 0) {
                             <li><a class="active" data-toggle="tab" href="#description">Description</a></li>
                             <li><a data-toggle="tab" href="#specification">Specification</a></li>
 
-                            <?php
-                                $order = [];
-                                
-                                if (auth()->user()) {
-                                    $order = \App\Models\Order::where('product_id', $product->id)
-                                        ->where('user_id', auth()->user()->id)
-                                        ->first();
-                                }
-                            ?>
-
-                            <?php if(!empty($order)): ?>
-                                <li><a data-toggle="tab" href="#reviews">Reviews</a></li>
-                            <?php endif; ?>
+                            <li><a data-toggle="tab" href="#reviews">Reviews</a></li>
 
                             <li><a data-toggle="tab" href="#shipping">Care & Disclaimer</a></li>
+                            <li><a data-toggle="tab" href="#need_help">Need Help</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade active show" id="description">
                                 <p><strong>Description</strong></p>
                                 <?php echo $info['desc']; ?>
                             </div>
+
+                            <div class="tab-pane fade" id="need_help">
+                                <p><strong>Need Help</strong></p>
+
+                                <?php echo $info['need_help']; ?>
+                            </div>
+
                             <div class="tab-pane fade" id="specification">
                                 <p><strong>Specification</strong></p>
 
                                 <?php echo $info['detail']; ?>
                             </div>
+
                             <div class="tab-pane fade" id="reviews">
                                 <div id="reviews" class="review-form-section">
                                     <div class="comments">
                                         <p>There are no reviews for this product.</p>
                                     </div>
                                     <div class="review-form-wrapper">
-                                        <h5 class="comment-reply-title">Add a review </h5>
-                                        <form action="" method="post" id="review_from" class="comment-form">
-                                            <?php echo csrf_field(); ?>
-                                            <div class="comment-form-rating">
-                                                <h4>Your Rating</h4>
-                                                <div class="stars-rating"> <span>Bad</span>
-                                                    <span class="rating">
-                                                        <input type="radio" id="star5" name="rating" value="5" />
-                                                        <label for="star5" title="Awesome - 5 stars"></label>
-                                                        <input type="radio" id="star4" name="rating" value="4" />
-                                                        <label for="star4" title="Pretty good - 4 stars"></label>
-                                                        <input type="radio" id="star3" name="rating" value="3" />
-                                                        <label for="star3" title="Meh - 3 stars"></label>
-                                                        <input type="radio" id="star2" name="rating" value="2" />
-                                                        <label for="star2" title="Kinda bad - 2 stars"></label>
-                                                        <input type="radio" id="star1" name="rating" value="1" />
-                                                        <label for="star1" title="Sucks big time - 1 star"></label>
-                                                    </span> <span>Good</span>
-                                                    <input type="hidden" name="rating_value" id="rating_value"
-                                                        value="0">
-                                                    <input type="hidden" name="product_id" id="product_id"
-                                                        value="<?php echo $product->id; ?>">
+
+                                        <?php
+                                            $order = [];
+                                            if (auth()->user()) {
+                                                $order = \App\Models\Order::where('product_id', $product->id)
+                                                    ->where('user_id', auth()->user()->id)
+                                                    ->first();
+                                            }
+                                        ?>
+
+                                        <?php if(!empty($order)): ?>
+                                            <h5 class="comment-reply-title">Add a review </h5>
+                                            <form action="" method="post" id="review_from" class="comment-form">
+                                                <?php echo csrf_field(); ?>
+                                                <div class="comment-form-rating">
+                                                    <h4>Your Rating</h4>
+                                                    <div class="stars-rating"> <span>Bad</span>
+                                                        <span class="rating">
+                                                            <input type="radio" id="star5" name="rating" value="5" />
+                                                            <label for="star5" title="Awesome - 5 stars"></label>
+                                                            <input type="radio" id="star4" name="rating" value="4" />
+                                                            <label for="star4" title="Pretty good - 4 stars"></label>
+                                                            <input type="radio" id="star3" name="rating" value="3" />
+                                                            <label for="star3" title="Meh - 3 stars"></label>
+                                                            <input type="radio" id="star2" name="rating" value="2" />
+                                                            <label for="star2" title="Kinda bad - 2 stars"></label>
+                                                            <input type="radio" id="star1" name="rating" value="1" />
+                                                            <label for="star1" title="Sucks big time - 1 star"></label>
+                                                        </span> <span>Good</span>
+                                                        <input type="hidden" name="rating_value" id="rating_value"
+                                                            value="0">
+                                                        <input type="hidden" name="product_id" id="product_id"
+                                                            value="<?php echo $product->id; ?>">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="comment-form-comment form-group col-12">
-                                                    <label for="comment">Customer Image</label>
-                                                    <input type="file" class="form-control" name="customer_image"
-                                                        id="customer_image" accept="image/*">
+                                                <div class="row">
+                                                    <div class="comment-form-comment form-group col-12">
+                                                        <label for="comment">Customer Image</label>
+                                                        <input type="file" class="form-control" name="customer_image"
+                                                            id="customer_image" accept="image/*">
+                                                    </div>
+                                                    <div class="comment-form-comment form-group col-12">
+                                                        <label for="comment">Review Title</label>
+                                                        <input type="text" class="form-control" name="title">
+                                                    </div>
+                                                    <div class="comment-form-comment form-group col-12">
+                                                        <label for="comment">Your Review <span
+                                                                class="required">*</span></label>
+                                                        <textarea class="form-control" id="comment" name="comment" cols="45" rows="8" aria-required="true"
+                                                            required=""></textarea>
+                                                    </div>
                                                 </div>
-                                                <div class="comment-form-comment form-group col-12">
-                                                    <label for="comment">Review Title</label>
-                                                    <input type="text" class="form-control" name="title">
+                                                <div class="form-submit">
+                                                    <input name="button" id="review_submit" type="button"
+                                                        class="btn btn-primary submit" value="Submit">
                                                 </div>
-                                                <div class="comment-form-comment form-group col-12">
-                                                    <label for="comment">Your Review <span
-                                                            class="required">*</span></label>
-                                                    <textarea class="form-control" id="comment" name="comment" cols="45" rows="8" aria-required="true"
-                                                        required=""></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-submit">
-                                                <input name="button" id="review_submit" type="button"
-                                                    class="btn btn-primary submit" value="Submit">
-                                            </div>
-                                        </form>
+                                            </form>
+                                            <br>
+                                        <?php endif; ?>
+                                        <?php
+                                            $ProductReviews = \App\Models\ProductReview::where('product_id', $product->id)->get();
+                                        ?>
+                                        <?php if(count($ProductReviews) > 0): ?>
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th>Username</th>
+                                                    <th>Profile</th>
+                                                    <th>Rating</th>
+                                                    <th>Title</th>
+                                                    <th>Comment</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php $__currentLoopData = $ProductReviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ProductReview): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <tr>
+                                                            <td><?php echo e($ProductReview->users->name); ?></td>
+                                                            <td><img src="<?php echo e(asset('file/' . $ProductReview->customer_image )); ?>" width="60px" alt=""></td>
+                                                            <td><?php echo e($ProductReview->rating); ?></td>
+                                                            <td><?php echo e($ProductReview->title); ?></td>
+                                                            <td><?php echo e($ProductReview->comment); ?></td>
+                                                        </tr>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </tbody>
+                                            </table>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -498,8 +537,9 @@ if (count($info['variations']) > 0) {
                                                 data-placement="top" title="Add to cart">
                                                 <span class="cart-title"><i class="fa fa-shopping-bag"></i></span>
                                             </a>
-                                            <a href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>" class="quick-view"
-                                                data-toggle="tooltip" data-placement="top" title="Quickview">
+                                            <a href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>"
+                                                class="quick-view" data-toggle="tooltip" data-placement="top"
+                                                title="Quickview">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </div>

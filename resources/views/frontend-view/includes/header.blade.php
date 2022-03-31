@@ -199,8 +199,8 @@ $htext = \App\Models\Htext::whereStatus('1')
                         </div>
                         <div class="header-search">
                             <div class="searchForm">
-                                <form action="" method="get">
-                                    <input type="text" name="s" class="search-input" placeholder="Search Products">
+                                <form action="{{ url('all') }}" method="get">
+                                    <input type="text" name="q" class="search-input" placeholder="Search Products" value="{{ request()->get('q') }}">
                                     <button class="btn btn-primary searchicon" id="searchbutton" type="button"><i
                                             class="fa fa-search"></i></button>
                                 </form>

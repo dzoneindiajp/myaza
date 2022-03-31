@@ -393,6 +393,24 @@
                                         </span>
                                     </div>
 
+                                    
+                                    <div class="col-6">
+                                        <div class="icheck-primary {{ $errors->has('is_sho_by_look') ? 'is-invalid' : '' }}">
+                                            <input type="checkbox" name="is_sho_by_look" id="is_sho_by_look" value="1"
+                                                {{ old('is_sho_by_look', $product->is_sho_by_look) == 1 ? 'checked' : '' }}>
+                                            <label for="is_sho_by_look">
+                                                Sho By Look
+                                            </label>
+                                        </div>
+
+                                        @if ($errors->has('is_sho_by_look'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('is_sho_by_look') }}
+                                            </span>
+                                        @endif
+
+                                    </div>
+
                                     {{-- <div class="form-group col-2">
                                         <label class="required">
                                             {{ trans('cruds.product.fields.in_stock') }}
@@ -424,7 +442,7 @@
                                         </span>
                                     </div> --}}
 
-                                    <div class="form-group col-3">
+                                    <div class="form-group col-6">
                                         <label class="required">
                                             {{ trans('cruds.product.fields.status') }}
                                         </label>
@@ -507,7 +525,7 @@
                                         </span>
                                     </div>
 
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-6">
                                         <label for="description" class="required">
                                             {{ trans('cruds.product.fields.description') }}
                                         </label>
@@ -522,6 +540,23 @@
                                         <span class="help-block">
                                             {{ trans('cruds.product.fields.description_helper') }}
                                         </span>
+                                    </div>
+
+                                    <div class="form-group col-6">
+                                        <label for="need_help" class="required">
+                                            Need Help
+                                        </label>
+
+                                        <textarea
+                                            class="form-control desc {{ $errors->has('need_help') ? 'is-invalid' : '' }}"
+                                            name="need_help" id="need_help" required>{!! old('need_help', $product->need_help) !!}</textarea>
+
+                                        @if ($errors->has('need_help'))
+                                            <span class="text-danger">
+                                                {{ $errors->first('need_help') }}
+                                            </span>
+                                        @endif
+
                                     </div>
                                 </div>
                             </div>
@@ -1650,6 +1685,9 @@
       CKEDITOR.replace( 'details' );
       CKEDITOR.add
 
+      CKEDITOR.replace( 'need_help' );
+      CKEDITOR.add
+      
       CKEDITOR.replace( 'description' );
       CKEDITOR.add
 </script>

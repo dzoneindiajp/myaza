@@ -165,6 +165,7 @@ class ProductController extends Controller
         $info['name'] = $product->name;
         $info['hsn'] = $product->hsn_code;
         $info['desc'] = $product->description;
+        $info['need_help'] = $product->need_help;
         $info['detail'] = $product->details;
         $info['slug'] = $product->slug;
         $info['sku'] = $product->sku_code;

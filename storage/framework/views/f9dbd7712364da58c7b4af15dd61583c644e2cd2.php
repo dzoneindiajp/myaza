@@ -390,8 +390,27 @@
                                     </div>
 
                                     
+                                    <div class="col-6">
+                                        <div class="icheck-primary <?php echo e($errors->has('is_sho_by_look') ? 'is-invalid' : ''); ?>">
+                                            <input type="checkbox" name="is_sho_by_look" id="is_sho_by_look" value="1"
+                                                <?php echo e(old('is_sho_by_look', $product->is_sho_by_look) == 1 ? 'checked' : ''); ?>>
+                                            <label for="is_sho_by_look">
+                                                Sho By Look
+                                            </label>
+                                        </div>
 
-                                    <div class="form-group col-3">
+                                        <?php if($errors->has('is_sho_by_look')): ?>
+                                            <span class="text-danger">
+                                                <?php echo e($errors->first('is_sho_by_look')); ?>
+
+                                            </span>
+                                        <?php endif; ?>
+
+                                    </div>
+
+                                    
+
+                                    <div class="form-group col-6">
                                         <label class="required">
                                             <?php echo e(trans('cruds.product.fields.status')); ?>
 
@@ -484,7 +503,7 @@
                                         </span>
                                     </div>
 
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-6">
                                         <label for="description" class="required">
                                             <?php echo e(trans('cruds.product.fields.description')); ?>
 
@@ -502,6 +521,24 @@
                                             <?php echo e(trans('cruds.product.fields.description_helper')); ?>
 
                                         </span>
+                                    </div>
+
+                                    <div class="form-group col-6">
+                                        <label for="need_help" class="required">
+                                            Need Help
+                                        </label>
+
+                                        <textarea
+                                            class="form-control desc <?php echo e($errors->has('need_help') ? 'is-invalid' : ''); ?>"
+                                            name="need_help" id="need_help" required><?php echo old('need_help', $product->need_help); ?></textarea>
+
+                                        <?php if($errors->has('need_help')): ?>
+                                            <span class="text-danger">
+                                                <?php echo e($errors->first('need_help')); ?>
+
+                                            </span>
+                                        <?php endif; ?>
+
                                     </div>
                                 </div>
                             </div>
@@ -1633,6 +1670,9 @@
       CKEDITOR.replace( 'details' );
       CKEDITOR.add
 
+      CKEDITOR.replace( 'need_help' );
+      CKEDITOR.add
+      
       CKEDITOR.replace( 'description' );
       CKEDITOR.add
 </script>

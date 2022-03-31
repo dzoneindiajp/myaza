@@ -501,6 +501,12 @@ class ProductController extends Controller
             }
         }
 
+        $is_sho_by_look = (isset($request->is_sho_by_look) && $request->is_sho_by_look != "") ? $request->is_sho_by_look : 0;
+        $data_arr = array(
+            "is_sho_by_look" => $is_sho_by_look
+        );
+        $product->update($data_arr);
+
        $product_data = $request->except('gallery', 'attributes', 'color_id', 'size_id','old','variation');
 
         $product->update($product_data);

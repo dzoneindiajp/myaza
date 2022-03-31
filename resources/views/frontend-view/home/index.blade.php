@@ -134,18 +134,20 @@
             <div class="product-collection-wrapper">
                 <div class="product-carousel">
                   @foreach ($home_cat as $home_cat_show)
-                    <div class="product-collection-item col-lg-4 col-md-4 col-sm-12 col-12 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
-                        <div class="product-collection-wrap">
-                            <div class="product-collection-image"><a href="{{url('/').$home_cat_show->slug}}">
-                                    <img src="{{ asset('file/'.$home_cat_show->image); }}" alt="" />
-                                </a>
-                            </div>
-                            <div class="product-collection-summery">
-                                <h4 class="product-collection-title"> <a href="{{url('/').$home_cat_show->slug}}">{{ucfirst($home_cat_show->name)}}</a></h4>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
+                    @if (file_exists(public_path() . '/file/' . $home_cat_show->image) && $home_cat_show->image != "")
+                      <div class="product-collection-item col-lg-4 col-md-4 col-sm-12 col-12 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                          <div class="product-collection-wrap">
+                              <div class="product-collection-image"><a href="{{url('/').$home_cat_show->slug}}">
+                                      <img src="{{ asset('file/'.$home_cat_show->image); }}" alt="" />
+                                  </a>
+                              </div>
+                              <div class="product-collection-summery">
+                                  <h4 class="product-collection-title"> <a href="{{url('/').$home_cat_show->slug}}">{{ucfirst($home_cat_show->name)}}</a></h4>
+                              </div>
+                          </div>
+                      </div>
+                    @endif
+                  @endforeach
               </div>
             </div>
         </div>

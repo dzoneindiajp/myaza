@@ -134,18 +134,20 @@
             <div class="product-collection-wrapper">
                 <div class="product-carousel">
                   <?php $__currentLoopData = $home_cat; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $home_cat_show): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="product-collection-item col-lg-4 col-md-4 col-sm-12 col-12 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
-                        <div class="product-collection-wrap">
-                            <div class="product-collection-image"><a href="<?php echo e(url('/').$home_cat_show->slug); ?>">
-                                    <img src="<?php echo e(asset('file/'.$home_cat_show->image)); ?>" alt="" />
-                                </a>
-                            </div>
-                            <div class="product-collection-summery">
-                                <h4 class="product-collection-title"> <a href="<?php echo e(url('/').$home_cat_show->slug); ?>"><?php echo e(ucfirst($home_cat_show->name)); ?></a></h4>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(file_exists(public_path() . '/file/' . $home_cat_show->image) && $home_cat_show->image != ""): ?>
+                      <div class="product-collection-item col-lg-4 col-md-4 col-sm-12 col-12 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                          <div class="product-collection-wrap">
+                              <div class="product-collection-image"><a href="<?php echo e(url('/').$home_cat_show->slug); ?>">
+                                      <img src="<?php echo e(asset('file/'.$home_cat_show->image)); ?>" alt="" />
+                                  </a>
+                              </div>
+                              <div class="product-collection-summery">
+                                  <h4 class="product-collection-title"> <a href="<?php echo e(url('/').$home_cat_show->slug); ?>"><?php echo e(ucfirst($home_cat_show->name)); ?></a></h4>
+                              </div>
+                          </div>
+                      </div>
+                    <?php endif; ?>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </div>
             </div>
         </div>
