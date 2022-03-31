@@ -1,0 +1,7 @@
+S.No,Type,Name/Primary Variation,Category Name/Color,Child Category Name/Size,Sub Child Category/MRP,Description/Sale Price,Care_and_disclaimer/Quantity,SKU,HSN,Tax Rate,Is Exclusive,Is Featured,Is New,Weight,attr_1_name,attr_val_1_name,attr_2_name,attr_val_2_name,attr_3_name,attr_val_3_name,image1,image2
+1,product,FLARE TUNIC DHOTI SET,Women,Kurta,Tops & Tunics,,,ASD,12123,2,1,0,1,0.5,attr_1_Occasions,attr_val_1_Festivals,attr_2_Fit,attr_val_2_Comfort Fit,attr_3_Patterns,attr_val_3_Striped,"img_Red#FF0000@1638449506iQJa58Zx.jpg,1638449508JrnoaOy7.jpg,1638449508oA4SAarV.jpg","img_Green#008000@16384495254CZTaTQh.jpg,1638449524oXkzq5h0.jpg"
+2,variation,1,Yellow#FFFF00,XS#36,12000,9000,120,,,,,,,,,,,,,,,
+3,variation,1,Yellow#FFFF00,M#40,12000,9000,120,,,,,,,,,,,,,,,
+4,variation,1,Yellow#FFFF00,S#38,12000,9000,120,,,,,,,,,,,,,,,
+5,variation,0,Red#FF0000,XS#36,12000,9000,120,,,,,,,,,,,,,,,
+6,variation,0,Red#FF0000,M#40,12000,9000,120,,,,,,,,,,,,,,,
