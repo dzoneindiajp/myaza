@@ -217,6 +217,14 @@ if (count($info['variations']) > 0) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div>
+                                                <p>We’d recommend that you see the Size & Fit information before
+                                                    choosing your size.</p>
+                                                <ul>
+                                                    <li>Free shipping on all orders</li>
+                                                    <li>Price inclusive of all taxes</li>
+                                                </ul>
+                                            </div>
                                             <div class="product-variations">
                                                 <table class="variations" cellspacing="0">
                                                     <tbody>
@@ -314,6 +322,26 @@ if (count($info['variations']) > 0) {
                                                 <span>Share On : </span>
                                                 <div id="share" class="round-shares"></div>
                                             </div>
+
+                                            <div>
+                                                <div class="cbp-ntcontent">
+                                                    <div class="help">
+                                                        <h5>Need help with this product?</h5>
+                                                        <p><strong>Call Us</strong></p>
+                                                        <p><a href="tel:7737384209" target="_new"><i
+                                                                    class="icon icon-phone3"></i> +91 7737384209</a></p>
+                                                        <p><strong>WhatsApp Us</strong></p>
+                                                        <p><a href="https://wa.me/7737384209/?text=Hello Myaza Need Enquiry Regarding M307"
+                                                                target="_new"><i class="icon icon-phone3"></i> +91
+                                                                7737384209</a></p>
+                                                        <p><strong>Write to Us</strong></p>
+                                                        <p><a href="mailto:info@myazatrendz.com" target="_new"><i
+                                                                    class="icon icon-envelope"></i>
+                                                                info@myazatrendz.com</a></p>
+                                                        <span>We'll get back to you within 24 hours</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!--<div class="single-wishlist-btn sharebtn">
                                                       <a href="#add_to_wishlist=[]" rel="nofollow" data-product-id="" class="add_to_wishlist single_add_to_wishlist" title="Share">
                                                           <i class="fa fa-share"></i> Share
@@ -354,7 +382,8 @@ if (count($info['variations']) > 0) {
                                                     </div>
                                                 </li>
                                                 <li><span class="promise-wrap">
-                                                        <div class="promise-icon"><i class="fas fa-sync"></i></div>
+                                                        <div class="promise-icon"><i class="fas fa-sync"></i>
+                                                        </div>
                                                         <p>Lifetime Exchange &amp; Buy-Back</p>
                                                     </span></li>
                                                 <li>
@@ -388,7 +417,7 @@ if (count($info['variations']) > 0) {
                             <li><a data-toggle="tab" href="#reviews">Reviews</a></li>
 
                             <li><a data-toggle="tab" href="#shipping">Care & Disclaimer</a></li>
-                            <li><a data-toggle="tab" href="#need_help">Need Help</a></li>
+                            
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade active show" id="description">
@@ -479,19 +508,20 @@ if (count($info['variations']) > 0) {
                                         <?php if(count($ProductReviews) > 0): ?>
                                             <table class="table table-condensed">
                                                 <thead>
-                                                <tr>
-                                                    <th>Username</th>
-                                                    <th>Profile</th>
-                                                    <th>Rating</th>
-                                                    <th>Title</th>
-                                                    <th>Comment</th>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Username</th>
+                                                        <th>Profile</th>
+                                                        <th>Rating</th>
+                                                        <th>Title</th>
+                                                        <th>Comment</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php $__currentLoopData = $ProductReviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ProductReview): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                         <tr>
                                                             <td><?php echo e($ProductReview->users->name); ?></td>
-                                                            <td><img src="<?php echo e(asset('file/' . $ProductReview->customer_image )); ?>" width="60px" alt=""></td>
+                                                            <td><img src="<?php echo e(asset('file/' . $ProductReview->customer_image)); ?>"
+                                                                    width="60px" alt=""></td>
                                                             <td><?php echo e($ProductReview->rating); ?></td>
                                                             <td><?php echo e($ProductReview->title); ?></td>
                                                             <td><?php echo e($ProductReview->comment); ?></td>
@@ -518,43 +548,47 @@ if (count($info['variations']) > 0) {
                         </div>
                         <div class="products product-carousel with-bg-white">
                             <?php foreach($trending as $trend){ $img=(isset($trend['images'][0])) ? $trend['images'][0] : '' ; ?>
-                            <div class="product-item animate__animated animate__fadeInUp">
-                                <div class="product-wrap">
-                                    <div class="product-image">
-                                        <a class="pro-img" href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>">
-                                            <img src="<?php echo asset('file') . '/' . $img; ?>" alt="">
-                                        </a>
-                                        <div class="product-action">
-                                            <a class="wishlist" href="javascript:void(0);"
-                                                onclick="doRelatedToWishlist($(this),'<?php echo $trend['id']; ?>','<?php echo $trend['variation_id']; ?>')"
-                                                title="Wishlist" data-toggle="tooltip" data-placement="top"
-                                                title="Wishlist">
-                                                <?php //echo $trend['variation_id']."_".$trend['id'];
-                                                ?><?php echo $trend['wishlist'] ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'; ?>
+                            <?php if(file_exists(public_path('/file/') . $img) && $img != ''): ?>
+                                <div class="product-item animate__animated animate__fadeInUp">
+                                    <div class="product-wrap">
+                                        <div class="product-image">
+                                            <a class="pro-img"
+                                                href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>">
+                                                <img src="<?php echo asset('file') . '/' . $img; ?>" alt="">
                                             </a>
-                                            <a href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>"
-                                                class="add-to-cart ajax-spin-cart" data-toggle="tooltip"
-                                                data-placement="top" title="Add to cart">
-                                                <span class="cart-title"><i class="fa fa-shopping-bag"></i></span>
-                                            </a>
-                                            <a href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>"
-                                                class="quick-view" data-toggle="tooltip" data-placement="top"
-                                                title="Quickview">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
+                                            <div class="product-action">
+                                                <a class="wishlist" href="javascript:void(0);"
+                                                    onclick="doRelatedToWishlist($(this),'<?php echo $trend['id']; ?>','<?php echo $trend['variation_id']; ?>')"
+                                                    title="Wishlist" data-toggle="tooltip" data-placement="top"
+                                                    title="Wishlist">
+                                                    <?php //echo $trend['variation_id']."_".$trend['id'];
+                                                    ?><?php echo $trend['wishlist'] ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'; ?>
+                                                </a>
+                                                <a href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>"
+                                                    class="add-to-cart ajax-spin-cart" data-toggle="tooltip"
+                                                    data-placement="top" title="Add to cart">
+                                                    <span class="cart-title"><i
+                                                            class="fa fa-shopping-bag"></i></span>
+                                                </a>
+                                                <a href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>"
+                                                    class="quick-view" data-toggle="tooltip" data-placement="top"
+                                                    title="Quickview">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h3 class="product-title">
-                                            <a
-                                                href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>"><?php echo $trend['name']; ?></a>
-                                        </h3>
-                                        <div class="product-price">
-                                            <span class="new-price">₹<?php echo $trend['single_sales_price']; ?></span>
+                                        <div class="product-content">
+                                            <h3 class="product-title">
+                                                <a
+                                                    href="<?php echo e(url('/')); ?>/<?php echo e($trend['slug']); ?>"><?php echo $trend['name']; ?></a>
+                                            </h3>
+                                            <div class="product-price">
+                                                <span class="new-price">₹<?php echo $trend['single_sales_price']; ?></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
                             <?php } ?>
                         </div>
                     </div>

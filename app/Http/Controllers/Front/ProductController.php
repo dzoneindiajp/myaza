@@ -40,15 +40,17 @@ class ProductController extends Controller
         $count = 1;
         foreach($variaton as $r=>$scol){
             $ch = '';
-            $disabled = ($scol->single_price_quantity == "" || $scol->single_price_quantity == 0) ? 'disabled':'';
-            if($disabled == "" && $count == 1){
-                $count = $count + 1;
-                $ch = 'checked';
+
+            if($scol->single_price_quantity != "" && $scol->single_price_quantity != 0){
+                if($count == 1){
+                    $count = $count + 1;
+                    $ch = 'checked';
+                }
+                $html .= '<li class="variable-item selected">
+                    <input onchange="bringvariation()" '.$ch.' id="size_'.$scol->name.'" value="'.$scol->id.'" type="radio" name="pa_size">
+                    <label  data-toggle="tooltip" for="size_'.$scol->name.'" title="'.$scol->name.'"><span style="position: relative;text-align: center;line-height: 35px;">'.$scol->name.'</span></label>
+                </li>';
             }
-            $html .= '<li class="variable-item selected">
-                <input onchange="bringvariation()" '.$ch.' '.$disabled.' id="size_'.$scol->name.'" value="'.$scol->id.'" type="radio" name="pa_size">
-                <label  data-toggle="tooltip" for="size_'.$scol->name.'" title="'.$scol->name.'"><span style="position: relative;text-align: center;line-height: 35px;">'.$scol->name.'</span></label>
-            </li>';
         }
         return response()->json(['html'=>$html],200);
     }
@@ -196,7 +198,7 @@ class ProductController extends Controller
 
         
 
-        $products = Product::where('category_id',$product->category_id)->limit(10)->get();
+        $products = Product::where('sub_category_id',$product->sub_category_id)->limit(10)->get();
         $trending = [];
         $i = 0;
 
@@ -279,6 +281,7 @@ class ProductController extends Controller
             $allcategories = Category::where('status',1)->get();
             $conditions = ['status' => 1];
             $catid = 0;
+            $cat_id = 0;
             $catbanner = 'no';
             $catavail = true;
             $title = 'Products';
@@ -712,7 +715,9 @@ class ProductController extends Controller
             $attributes=Attribute::where('status',1)->get();
             
             
-            
+            if($request->q){
+                $products = $products->where('name', 'LIKE', '%'.$request->q.'%');
+            }
             $products=$products->distinct();
             $products = $products->paginate(24)->appends(request()->query());
     
