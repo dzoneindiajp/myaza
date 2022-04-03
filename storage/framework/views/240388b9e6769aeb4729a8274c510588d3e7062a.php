@@ -102,7 +102,7 @@
                                 <button class="filter-dropdown-title" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">Color</button>
                                 <div class="filter-dropdown-menu dropdown-menu scrollable-menu">
-                                    <ul class="layer-filter color-filter">
+                                    <ul class="layer-filter color-filter product_attributes_colors">
                                         <?php if($colors->count() > 0 && $match !== null): ?>
                                             <?php if($match !== null): ?>
                                                 <?php $__currentLoopData = $colors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $scolor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -112,7 +112,7 @@
                                                     <?php if($catid !== 0): ?>
                                                         <?php if(in_array($scolor->id, $match->colors) && $match->is_color === 1): ?>
                                                             <li class="active">
-                                                                <input type="checkbox" class="filter"
+                                                                <input type="checkbox" class="filter color_<?php echo e($scolor->id); ?>"
                                                                     id="color-<?php echo e($scolor->id); ?>"
                                                                     data-name="<?php echo e($scolor->name); ?>"
                                                                     data-id="<?php echo e($scolor->id); ?>">
@@ -148,7 +148,7 @@
                                                         <?php endif; ?>
                                                     <?php else: ?>
                                                         <li class="active">
-                                                            <input type="checkbox" class="filter"
+                                                            <input type="checkbox" class="filter color_<?php echo e($scolor->id); ?>"
                                                                 id="color-<?php echo e($scolor->id); ?>"
                                                                 data-name="<?php echo e($scolor->name); ?>"
                                                                 data-id="<?php echo e($scolor->id); ?>">
@@ -165,15 +165,10 @@
                                                                         ->where('product_variations.color_id', $scolor->id)
                                                                         ->where('products.status', 1)
                                                                         ->where('single_price_quantity', '!=', '');
-                                                                    $category = \App\Models\Category::where('slug', $categorysearch)->first();
-                                                                    if ($catid !== 0) {
-                                                                        $data->where(function ($query) use ($category) {
-                                                                            $query
-                                                                                ->where('products.category_id', $category->id)
-                                                                                ->orWhere('products.sub_category_id', $category->id)
-                                                                                ->orWhere('products.sub_category_child_id', $category->id);
-                                                                        });
-                                                                    }
+                                                                        if(request()->get('q') != ""){
+                                                                            $products_ids = \App\Models\Product::where('name', 'LIKE', '%'.request()->get('q').'%')->pluck("id");
+                                                                            $data = $data->whereIn('product_variations.product_id', $products_ids);
+                                                                        }
                                                                     echo count($data->groupBy('products.id')->get());
                                                                     ?>
                                                                     )</span>
@@ -192,13 +187,13 @@
                                 <button class="filter-dropdown-title" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">Size</button>
                                 <div class="filter-dropdown-menu dropdown-menu scrollable-menu">
-                                    <ul class="layer-filter color-filter">
+                                    <ul class="layer-filter color-filter product_attributes_sizes">
                                         <?php if($sizes->count() > 0): ?>
                                             <?php $__currentLoopData = $sizes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <?php if($catid !== 0 && $match): ?>
                                                     <?php if(in_array($size->id, $match->sizes) && $match->is_size === 1): ?>
                                                         <li class="active">
-                                                            <input type="checkbox" class="filter"
+                                                            <input type="checkbox" class="filter size_<?php echo e($size->id); ?>"
                                                                 id="size-<?php echo e($size->id); ?>"
                                                                 data-name="<?php echo e($size->name); ?>"
                                                                 data-id="<?php echo e($size->id); ?>"><label
@@ -234,38 +229,29 @@
                                                     <?php endif; ?>
                                                 <?php else: ?>
                                                     <li class="active">
-                                                        <input type="checkbox" class="filter"
+                                                        <input type="checkbox" class="filter size_<?php echo e($size->id); ?>"
                                                             id="size-<?php echo e($size->id); ?>"
                                                             data-name="<?php echo e($size->name); ?>"
                                                             data-id="<?php echo e($size->id); ?>"><label
                                                             for="size-<?php echo e($size->id); ?>"
-                                                            style="cursor:pointer"><?php echo e($size->name); ?><span>
-                                                                (
+                                                            style="cursor:pointer"><?php echo e($size->name); ?>
+
+                                                            
+                                                            <span>(
                                                                 <?php
-                                                                
-                                                                $data = \DB::table('product_variations')
+                                                                $data = DB::table('product_variations')
                                                                     ->join('products', 'products.id', 'product_variations.product_id')
                                                                     ->where('product_variations.size_id', $size->id)
-                                                                    ->where('products.status', 1);
-                                                                
-                                                                if ($catid !== 0) {
-                                                                    $data->where(function ($query) use ($catid) {
-                                                                        $query
-                                                                            ->where('products.category_id', $catid)
-                                                                            ->orWhere('products.sub_category_id', $catid)
-                                                                            ->orWhere('products.sub_category_child_id', $catid);
-                                                                    });
-                                                                }
-                                                                
-                                                                $sizecount = $data->groupBy('product_variations.product_id')->get();
-                                                                
-                                                                if ($sizecount) {
-                                                                    echo count($sizecount);
-                                                                } else {
-                                                                    echo 0;
-                                                                }
+                                                                    ->where('products.status', 1)
+                                                                    ->where('single_price_quantity', '!=', '');
+                                                                    if(request()->get('q') != ""){
+                                                                        $products_ids = \App\Models\Product::where('name', 'LIKE', '%'.request()->get('q').'%')->pluck("id");
+                                                                        $data = $data->whereIn('product_variations.product_id', $products_ids);
+                                                                    }
+                                                                echo count($data->groupBy('products.id')->get());
                                                                 ?>
-                                                                )</span></label>
+                                                                )</span>
+                                                                </label>
                                                     </li>
                                                 <?php endif; ?>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -542,6 +528,11 @@
 
     $(document).on('change', '[id^="color-"]', function() {
         colors = [];
+        
+        if (!$(this).is(':checked')) {
+            var data_id = $(this).attr('data-id');
+            $('.color_'+data_id).prop("checked", false);
+        }
         $('[id^="color-"]').each(function() {
             if ($(this).is(':checked')) {
                 var id = $(this).attr('data-id');
@@ -553,6 +544,10 @@
 
     $(document).on('change', '[id^="size-"]', function() {
         sizes = [];
+        if (!$(this).is(':checked')) {
+            var data_id = $(this).attr('data-id');
+            $('.size_'+data_id).prop("checked", false);
+        }
         $('[id^="size-"]').each(function() {
             if ($(this).is(':checked')) {
                 var id = $(this).attr('data-id');
@@ -618,6 +613,8 @@
                 $(document).find('.product_counts').html(data.count);
                 $('.product_list_page').empty().html(data.data);
                 $('.product_attributes_filter').empty().html(data.attributes);
+                $('.product_attributes_sizes').empty().html(data.sizes);
+                $('.product_attributes_colors').empty().html(data.colors);
                 overlay.hide();
             },
             error: function(err) {

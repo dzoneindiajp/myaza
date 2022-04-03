@@ -1,10 +1,60 @@
 @include('frontend-view.includes.header')
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
 <style>
     .round-shares .jssocials-share-link {
         border-radius: 50%;
     }
 
+    p {
+        margin-top: 0;
+        color: rgb(181, 42, 107);
+        margin-bottom: 1rem;
+    }
+
+    .priceBottomText span {
+        color: rgb(181, 42, 107);
+        font-weight: 600;
+        font-size: 13px;
+        font-family: Poppins;
+        letter-spacing: 0;
+    }
+
+    .productOffersIcon .fa {
+        border: 1px solid #7b283c;
+        padding: 8px;
+        border-radius: 50px;
+        color: #7b283c;
+    }
+
+    element.style {}
+
+    p:last-child,
+    p:last-of-type {
+        margin-bottom: 0;
+    }
+
+    .productOffersText p {
+        font-size: 14px;
+        line-height: 17px;
+        color: black;
+    }
+
+    .productOffersInner {
+        display: inline-flex;
+        width: 100%;
+        align-items: center;
+        max-width: 350px;
+        border: 1px solid rgb(235, 237, 238);
+        padding: 15px 10px;
+        margin-top: 5px;
+    }
+    .productServices {
+    display: inline-flex;
+    width: 100%;
+    max-width: 325px;
+    margin: 15px 0;
+}
 </style>
 <?php $pri_image = asset('/assets/images/noimg.jpg');
 $sales_price = 0;
@@ -115,6 +165,9 @@ if (count($info['variations']) > 0) {
                                                 Off</span>
                                         @endif
                                     </div>
+                                    <div class="priceBottomText">
+                                        <span> Price inclusive of all taxes</span>
+                                    </div>
                                     <div class="product-meta">
                                         <span class="product-meta-code"><strong>SKU Code : </strong> <span
                                                 class="sku"><?php echo $info['sku']; ?></span></span>
@@ -218,11 +271,12 @@ if (count($info['variations']) > 0) {
                                                 </div>
                                             </div>
                                             <div>
-                                                <p>We’d recommend that you see the Size & Fit information before
+                                                <p class="abc">We’d recommend that you see the Size & Fit
+                                                    information before
                                                     choosing your size.</p>
                                                 <ul>
-                                                    <li>Free shipping on all orders</li>
-                                                    <li>Price inclusive of all taxes</li>
+                                                    <li>Free shipping on all Prepaid orders</li>
+                                                    <!--<li>Price inclusive of all taxes</li>-->
                                                 </ul>
                                             </div>
                                             <div class="product-variations">
@@ -307,6 +361,46 @@ if (count($info['variations']) > 0) {
                                                     </div>
                                                     <!--<div class="box-border"><i class="fa fa-shopping-bag mr-3" aria-hidden="true"></i>Free Shipping Above Rs.999/- In India Only</div>-->
                                                 </div>
+                                                <br>
+
+                                                <div class="productOffers">
+                                                    <h4>Offers for you</h4>
+                                                    <div class="productOffersInner">
+                                                        <div class="productOffersIcon">
+                                                            <i class="fa fa-percent"></i>
+                                                        </div>
+                                                        <div class="productOffersText">
+                                                            @php
+                                                                $code = "";
+                                                                $max_discount = 0;
+                                                                $Coupon = \App\Models\Coupon::where("code", "PREPAID")->where("coupon_type", 2)->where("valid_from", "<=", date('Y-m-d h:i:s'))->where("valid_to", ">=", date('Y-m-d h:i:s'))->first();
+                                                               if(!empty($Coupon)){
+                                                                    $code = $Coupon->code;
+                                                                    $max_discount = $Coupon->max_discount;
+                                                               }
+                                                            @endphp
+                                                            <p>Use code <strong>{{ $code }}</strong> to get flat {{ $max_discount }}% off on
+                                                                prepaid orders</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="productServices">
+                                                    <div class="productServicesInner">
+                                                        <img src="https://cdn.shopify.com/s/files/1/0105/8881/5418/files/cash-on-delivery.png?v=1646648677">
+                                                        <p>COD available</p>
+                                                    </div>
+                                                    <div class="productServicesInner">
+                                                        <img src="https://cdn.shopify.com/s/files/1/0105/8881/5418/files/return-and-exchange.png?v=1646648677">
+                                                        <p>Return and Exchange</p>
+                                                        <a href="{{ url('/return-policy') }}" target="_blank">Know More</a>
+                                                    </div>
+                                                    <div class="productServicesInner">
+                                                        <img src="https://cdn.shopify.com/s/files/1/0105/8881/5418/files/free-shipping.png?v=1646648677">
+                                                        <p>Free Delivery within India</p>
+                                                    </div>
+                                                  </div>
+
                                             </div>
 
                                             <div class="product-summary-button">
@@ -327,6 +421,7 @@ if (count($info['variations']) > 0) {
                                                 <div class="cbp-ntcontent">
                                                     <div class="help">
                                                         <h5>Need help with this product?</h5>
+                                                        <p>Monday to Saturday 9am to 6pm (IST).</p>
                                                         <p><strong>Call Us</strong></p>
                                                         <p><a href="tel:7737384209" target="_new"><i
                                                                     class="icon icon-phone3"></i> +91 7737384209</a></p>

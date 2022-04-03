@@ -643,12 +643,16 @@ class ProductController extends Controller
                     }
                 }
 
-                $attributes = view('store.products.attributes', compact('selectedaatrs', 'prods', 'cat_id', 'request'))->render();
+                $attributes = view('store.products.attributes', compact('selectedaatrs', 'prods', 'cat_id', 'request', 'match'))->render();
+                $sizes = view('store.products.sizes', compact('selectedaatrs', 'prods', 'cat_id', 'request', 'match'))->render();
+                $colors = view('store.products.colors', compact('selectedaatrs', 'prods', 'cat_id', 'request', 'match'))->render();
                
                 return response()->json([
                     'success' => true,
                     'data' => $response,
                     'attributes' => $attributes,
+                    'sizes' => $sizes,
+                    'colors' => $colors,
                     'count' => $count,
                     'categories' => $html
                 ]);

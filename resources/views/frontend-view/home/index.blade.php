@@ -20,7 +20,7 @@
           <div class="slider-item">
             <div class="slider-images">
               <video width="100%" id="theVideo_{{$p}}">
-                <source src="{{asset('/file/videos').'/'.$banner->video}}" />
+                <source src="{{asset('public/file/videos').'/'.$banner->video}}" />
               </video>
             </div>
           </div>
@@ -230,7 +230,7 @@
 
             @if (count($trending) > 12)
               <div class="col-md-12 text-center">
-                <a href="{{ url('trending-products') }}" class="btn btn-primary">Read More</a>
+                <a href="{{ url('trending-products') }}" class="btn btn-primary">Show More</a>
               </div>
             @endif
 

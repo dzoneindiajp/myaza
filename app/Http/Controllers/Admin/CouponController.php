@@ -129,7 +129,7 @@ class CouponController extends Controller
                   ->where('id',$coupon->id)
                   ->update($rt);
 
-        if($request->has('customer_id')){
+        if($request->has('customer_id') && $request->customer_id != ""){
               $user = User::find($request->customer_id);
               event(new PrivateCouponEvent($user,$coupon->code));
           }
