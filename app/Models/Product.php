@@ -123,8 +123,6 @@ class Product extends Model {
         return $this->hasMany(ProductImage::class, 'product_id', 'id')->orderBy('product_images.id','asc');
     }
 
-
-
     public function productProductVariations()
     {
         return $this->hasMany(ProductVariation::class, 'product_id', 'id');

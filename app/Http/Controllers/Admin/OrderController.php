@@ -14,6 +14,7 @@ use Razorpay\Api\Api;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use PDF;
+use DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
@@ -329,10 +330,14 @@ class OrderController extends Controller
             return view('errors.404');
         }
 
-        $store = Setting::first();
-        view()->share(['order'=> $order, 'store' => $store]);
-        // return view('store.invoice.index', compact('order'));
-        $pdf = PDF::loadView('store.invoice.index', $order);
+        ini_set('max_execution_time', '300');
+        $single = UserOrder::where(['order_id'=>$orderid])->first();
+        $lists = UserOrder::select('orders.*','user_orders.*','orders.id as id')->leftJoin('orders','orders.order_id','=','user_orders.id')->where(['user_orders.order_id'=>$orderid])->get();
+      
+        $data['single'] = $single;
+        $data['lists'] = $lists;
+
+        $pdf = PDF::loadView('store.invoice.invoice_download', $data);
         return $pdf->download('invoice.pdf');
     }
 }

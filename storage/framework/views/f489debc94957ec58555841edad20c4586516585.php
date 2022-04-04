@@ -372,14 +372,14 @@ if (count($info['variations']) > 0) {
                                                         <div class="productOffersText">
                                                             <?php
                                                                 $code = "";
-                                                                $max_discount = 0;
-                                                                $Coupon = \App\Models\Coupon::where("code", "PREPAID")->where("coupon_type", 2)->where("valid_from", "<=", date('Y-m-d h:i:s'))->where("valid_to", ">=", date('Y-m-d h:i:s'))->first();
+                                                                $value = 0;
+                                                                $Coupon = \App\Models\Coupon::where("coupon_type", 3)->where("valid_from", "<=", date('Y-m-d h:i:s'))->where("valid_to", ">=", date('Y-m-d h:i:s'))->first();
                                                                if(!empty($Coupon)){
                                                                     $code = $Coupon->code;
-                                                                    $max_discount = $Coupon->max_discount;
+                                                                    $value = $Coupon->value;
                                                                }
                                                             ?>
-                                                            <p>Use code <strong><?php echo e($code); ?></strong> to get flat <?php echo e($max_discount); ?>% off on
+                                                            <p>Use code <strong><?php echo e($code); ?></strong> to get flat <?php echo e($value); ?>% off on
                                                                 prepaid orders</p>
                                                         </div>
                                                     </div>

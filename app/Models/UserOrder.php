@@ -52,4 +52,13 @@ class UserOrder extends Model
     {
         return $this->hasOne(Shipment::class,'order_id','order_id');
     }
+    public function size()
+    {
+        return $this->belongsTo(Size::class, 'size_id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(Color::class, 'color_id');
+    }
 }

@@ -56,7 +56,7 @@ class CheckoutController extends Controller
         $addressd = $request->input('id');
         $address = DB::table('user_addresses')->where('id',$addressd)->first();
         $pincode = $address->pincode;
-
+        
         $tweight = $this->getTotalWeight();
         $range = DB::select('select * from `weight_range` where '.$tweight.' BETWEEN `weight_from` and `weight_to` limit 1');
         //$range = DB::table('weight_range')->where('weight_from','>=',$tweight)->where('weight_to','<=',$tweight)->first();

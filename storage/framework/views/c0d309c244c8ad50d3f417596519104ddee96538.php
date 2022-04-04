@@ -103,21 +103,7 @@
                   </div>
                   <div class="col-lg-4 col-md-4 col-12">
                     <div class="cart-collaterals">
-                    <form class="" id="couponform" method="post">
-                        <?php echo csrf_field(); ?>
-                      <div class="coupon">
-                        <label for="coupon_code">Apply Coupon Code</label>
-                        <div class="coupon-group">
-                          <input type="text" ontype="detectChanges($(this))" name="coupon" <?php echo ($cdiscount>0)?'readonly':'' ;?> class="input-text" id="coupon-code" value="<?php echo $coupon ;?>"
-                            placeholder="Coupon code">
-                          <button type="button" id="<?php echo ($cdiscount>0)?'remove-coupon':'apply-coupon' ;?>" class="button" name="apply_coupon" value="Apply coupon"><?php echo ($cdiscount>0)?'Remove':'Apply' ?></button>
-                        </div>
-                        <a href="javascript:void(0)"><small data-toggle="modal" data-target="#couponcodeModal">Available Coupons</small></a><br>
-                        <?php if(!Auth::check()){ ?>
-                            <small class="text-danger">If you have individual coupon than please <a href="<?php echo e(url('login')); ?>">login</a> before apply</small>
-                        <?php } ?>
-                      </div>
-                    </form>
+                    
                       <!-- <div class="reward-points">
                         <h5>Use Reward Points</h5>
                         <div class="custom-control custom-checkbox reward-points-group">
@@ -134,10 +120,7 @@
                                 <th>Base Value</th>
                                 <td data-title="Base Value"> <span class="price subtotal-all">₹<?php echo $total ; ?></span> </td>
                               </tr>
-                              <tr class="shipping-totals shipping">
-                                <th>Coupon Discount</th>
-                                <td data-title="coupon-discount" id="coupon-discount">₹<?php echo $cdiscount ; ?></td>
-                              </tr>
+                              
                               <tr class="tax-totals tax">
                                 <th>GST</th>
                                 <td data-title="GST" id="total_tax">₹<?php echo $tax ; ?></td>
@@ -200,10 +183,6 @@
   </div>
   <!-- Coupon code Modal start  -->
 <script>
-$(document).ready(function(){
-    applyc(1);
-})
-
 function myFunction(value,y) {
     navigator.clipboard.writeText(value);
     notifyme('success','Coupon copied');
@@ -222,87 +201,6 @@ function myFunction(value,y) {
         });
     }
 
-    function applyc(v=0){
-      var coupon = $(document).find('#coupon-code').val();
-      var error = false;
-      if(coupon === ''){
-          if(v == 0){
-            notifyme('error','Enter coupon code');
-          }
-          return false;
-      }else{
-          $.ajax({
-              url: "<?php echo e(route('apply.coupon')); ?>",
-              method: "post",
-              data :$('#couponform').serialize() ,
-              beforeSend : function(){
-                  $('#cover-spin').show(0);
-              },
-              success: function (response) {
-                  $('#cover-spin').hide(0);
-                  if(response.code === 200){
-                      $(document).find('#coupon-discount').html('₹'+response.coupon_price);
-                      $('.order-total').find('.price').html('₹'+response.grandTotal);
-                      
-                      $('#coupon-code').attr('readonly',true);
-                      
-                      $('#couponform').find('button').attr('id','remove-coupon');
-                      $('#couponform').find('button').html('Remove');
-                      if(v == 0){
-                        notifyme('success',response.message);
-                      }
-                      
-                  }else{
-                      $('#coupon-code').val('');
-                      if(v == 0){
-                        notifyme('error',response.message);
-                      }
-                  }
-              },
-              error : function(err){
-                  $('#cover-spin').hide(0);
-                  if(v == 0){
-                    notifyme('error',response.message);
-                  }
-              }
-          });
-      }
-    }
-
-    $(document).on('click','#apply-coupon', function(){
-        applyc();
-    });
-
-$(document).on('click','#remove-coupon', function(){
-    $.ajax({
-            url: "<?php echo e(route('remove.coupon')); ?>",
-            method: "post",
-            data :$('#couponform').serialize() ,
-            beforeSend : function(){
-                $('#cover-spin').show(0);
-            },
-            success: function (response) {
-                $('#cover-spin').hide(0);
-                if(response.code === 200){
-                    $(document).find('#coupon-discount').html('₹0');
-                    $('.order-total').find('.price').html('₹'+response.grandTotal);
-                    
-                    $('#coupon-code').attr('readonly',false);
-                    
-                    $('#coupon-code').val('');
-                    $('#couponform').find('button').attr('id','apply-coupon');
-                    $('#couponform').find('button').html('Apply');
-                    notifyme('success',response.message);
-                }else{
-                    notifyme('error',response.message);
-                }
-            },
-            error : function(err){
-                $('#cover-spin').hide(0);
-                notifyme('error',response.message);
-            }
-        });
-});
 
 </script>
 <?php echo $__env->make('frontend-view.includes.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\myaza\resources\views/store/cart/index.blade.php ENDPATH**/ ?>

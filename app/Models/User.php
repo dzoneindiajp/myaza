@@ -92,4 +92,20 @@ class User extends Authenticatable {
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
+
+    public function stat()
+    {
+        return $this->belongsTo(State::class, 'state_id');
+    }
+
+    public function cntry()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+
 }

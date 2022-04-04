@@ -53,7 +53,6 @@
                 </div>
 
 
-
                 <div class="form-group col-4" @if($coupon->coupon_type != 0) ? style="display:none" @endif id="hard-user-type">
                     <label class="required">{{ trans('cruds.coupon.fields.user_type') }}</label>
                     <select class="form-control {{ $errors->has('user_type') ? 'is-invalid' : '' }}" name="user_type"
@@ -107,7 +106,7 @@
                                         </label>
                                         <select
                                             class="form-control select2 {{ $errors->has('category') ? 'is-invalid' : '' }}"
-                                            name="category_id" id="optCategory" required>
+                                            name="category_id" id="optCategory">
                                             @foreach ($categories as $id => $entry)
                                                 <option value="{{ $id }}" <?php echo ($coupon->category_id == $id) ? 'selected' : ''; ?>>
                                                     {{ $entry }}
@@ -131,7 +130,7 @@
 
                                         <select
                                             class="form-control select2 {{ $errors->has('subcategory_id') ? 'is-invalid' : '' }}"
-                                            name="sub_category_id" id="optSubCategory" required>
+                                            name="sub_category_id" id="optSubCategory">
                                             <option value="">
                                                 @lang('global.pleaseSelect')
                                             </option>
@@ -274,12 +273,12 @@
                     'image_view_name' => 'image_view',
                     'image_error_name' => 'image_error',
                     'required' => '',
-                    'image_url' => $coupon->photo->url
+                    'image_url' => (isset($coupon->photo) && isset($coupon->photo->url) ? $coupon->photo->url : '') 
                     ])
                     &nbsp;
+                    
                     <span class="text-warning">* Coupon size should be maximum 50px.</span>
                 </div>
-
                 <div class="form-group text-right col-12">
                     <button class="btn btn-warning" type="submit">
                         {{ trans('global.update') }}

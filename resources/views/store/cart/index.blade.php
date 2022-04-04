@@ -103,7 +103,7 @@
                   </div>
                   <div class="col-lg-4 col-md-4 col-12">
                     <div class="cart-collaterals">
-                    <form class="" id="couponform" method="post">
+                    {{-- <form class="" id="couponform" method="post">
                         @csrf
                       <div class="coupon">
                         <label for="coupon_code">Apply Coupon Code</label>
@@ -117,7 +117,7 @@
                             <small class="text-danger">If you have individual coupon than please <a href="{{ url('login') }}">login</a> before apply</small>
                         <?php } ?>
                       </div>
-                    </form>
+                    </form> --}}
                       <!-- <div class="reward-points">
                         <h5>Use Reward Points</h5>
                         <div class="custom-control custom-checkbox reward-points-group">
@@ -134,10 +134,10 @@
                                 <th>Base Value</th>
                                 <td data-title="Base Value"> <span class="price subtotal-all">₹<?php echo $total ; ?></span> </td>
                               </tr>
-                              <tr class="shipping-totals shipping">
+                              {{-- <tr class="shipping-totals shipping">
                                 <th>Coupon Discount</th>
                                 <td data-title="coupon-discount" id="coupon-discount">₹<?php echo $cdiscount ; ?></td>
-                              </tr>
+                              </tr> --}}
                               <tr class="tax-totals tax">
                                 <th>GST</th>
                                 <td data-title="GST" id="total_tax">₹<?php echo $tax ; ?></td>
@@ -200,10 +200,6 @@
   </div>
   <!-- Coupon code Modal start  -->
 <script>
-$(document).ready(function(){
-    applyc(1);
-})
-
 function myFunction(value,y) {
     navigator.clipboard.writeText(value);
     notifyme('success','Coupon copied');
@@ -222,87 +218,6 @@ function myFunction(value,y) {
         });
     }
 
-    function applyc(v=0){
-      var coupon = $(document).find('#coupon-code').val();
-      var error = false;
-      if(coupon === ''){
-          if(v == 0){
-            notifyme('error','Enter coupon code');
-          }
-          return false;
-      }else{
-          $.ajax({
-              url: "{{ route('apply.coupon') }}",
-              method: "post",
-              data :$('#couponform').serialize() ,
-              beforeSend : function(){
-                  $('#cover-spin').show(0);
-              },
-              success: function (response) {
-                  $('#cover-spin').hide(0);
-                  if(response.code === 200){
-                      $(document).find('#coupon-discount').html('₹'+response.coupon_price);
-                      $('.order-total').find('.price').html('₹'+response.grandTotal);
-                      
-                      $('#coupon-code').attr('readonly',true);
-                      
-                      $('#couponform').find('button').attr('id','remove-coupon');
-                      $('#couponform').find('button').html('Remove');
-                      if(v == 0){
-                        notifyme('success',response.message);
-                      }
-                      
-                  }else{
-                      $('#coupon-code').val('');
-                      if(v == 0){
-                        notifyme('error',response.message);
-                      }
-                  }
-              },
-              error : function(err){
-                  $('#cover-spin').hide(0);
-                  if(v == 0){
-                    notifyme('error',response.message);
-                  }
-              }
-          });
-      }
-    }
-
-    $(document).on('click','#apply-coupon', function(){
-        applyc();
-    });
-
-$(document).on('click','#remove-coupon', function(){
-    $.ajax({
-            url: "{{ route('remove.coupon') }}",
-            method: "post",
-            data :$('#couponform').serialize() ,
-            beforeSend : function(){
-                $('#cover-spin').show(0);
-            },
-            success: function (response) {
-                $('#cover-spin').hide(0);
-                if(response.code === 200){
-                    $(document).find('#coupon-discount').html('₹0');
-                    $('.order-total').find('.price').html('₹'+response.grandTotal);
-                    
-                    $('#coupon-code').attr('readonly',false);
-                    
-                    $('#coupon-code').val('');
-                    $('#couponform').find('button').attr('id','apply-coupon');
-                    $('#couponform').find('button').html('Apply');
-                    notifyme('success',response.message);
-                }else{
-                    notifyme('error',response.message);
-                }
-            },
-            error : function(err){
-                $('#cover-spin').hide(0);
-                notifyme('error',response.message);
-            }
-        });
-});
 
 </script>
 @include('frontend-view.includes.footer')

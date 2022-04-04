@@ -146,10 +146,20 @@ class CartController extends Controller
 
     public function apply_coupon(Request $request)
     {
+        
+        \Session::put('coupon', '');
+        \Session::put('coupon_discount', 0);
+
+        $coupon_type = [0,2];
+
+        if($request->payment_input == "wallet" || $request->payment_input == "razorpay"){
+            $coupon_type[] = 3;
+        }
+        
         $coupon = Coupon::where('valid_to','>=', Carbon::now())
                   ->where('status',1)
                   ->where('code',$request->coupon)
-                  ->whereIn('coupon_type',[0,2])
+                  ->whereIn('coupon_type',$coupon_type)
                   ->whereIn('user_type',[0,1,2,4])
                   ->first();
         

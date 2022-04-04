@@ -40,6 +40,9 @@ class Coupon extends Model {
     public const COUPON_TYPE_SELECT = [
         '0' => 'Private',
         '2' => 'Retail Order',
+        '3' => 'Online',
+        '4' => 'Offline',
+        '5' => 'Both',
     ];
 
     public $table = 'coupons';
