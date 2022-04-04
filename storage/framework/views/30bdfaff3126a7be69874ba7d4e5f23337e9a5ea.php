@@ -101,7 +101,7 @@
                                                     </tr>
                                                     <tr class="shipping-totals">
                                                         <td>Coupon Discount</td>
-                                                        <td data-title="Shipping" class="text-right">
+                                                        <td data-title="Shipping" class="text-right" id="coupon-discount">
                                                             ₹<?php echo $coupon_discount; ?></td>
                                                     </tr>
                                                     <tr class="tax-totals tax">
@@ -131,19 +131,12 @@
                                         <div id="payment" class="checkout-payment shipping-section">
                                             <h5 class="shipping-section-title">Payment Details</h5>
                                             <div class="payemt-option">
-                                                <?php if($user_wallet): ?>
-                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="payment-wallet" name="payment-input"
-                                                            class="custom-control-input" value="wallet" checked>
-                                                        <label class="custom-control-label"
-                                                            for="payment-wallet">Wallet</label>
-                                                    </div>
-                                                <?php endif; ?>
+                                                
                                                 <div class="custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id="payment-razorpay" name="payment-input"
-                                                        class="custom-control-input" value="razorpay">
+                                                        class="custom-control-input" value="razorpay" checked>
                                                     <label class="custom-control-label"
-                                                        for="payment-razorpay">Razorpay</label>
+                                                        for="payment-razorpay">Online</label>
                                                 </div>
                                                 <div class="custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id="payment-cod" name="payment-input"
@@ -152,23 +145,12 @@
                                                 </div>
                                             </div>
                                             <div class="payment-methods-option">
-                                                <?php if($user_wallet): ?>
-                                                    <div id="payment-wallet" class="payment-method wallet">
-                                                        <div class="payment-box">
-                                                            <h4 class="payment-box-title">Pay with your wallet</h4>
-                                                            <p>Balance : ₹ <?php echo $user_wallet && isset($user_wallet->amount) ? $user_wallet->amount : 0; ?></p>
-                                                            <button type="button" class="button"
-                                                                name="checkout_place_order" id="place_order"
-                                                                value="Place order" data-value="Place order">Place
-                                                                order</button>
-                                                        </div>
-                                                    </div>
-                                                <?php endif; ?>
+                                                
                                                 <div id="payment-razorpay" class="payment-method razorpay"
-                                                    style="display: none;">
+                                                    >
                                                     <div class="payment-box">
-                                                        <h4 class="payment-box-title"> Pay with Razorpay</h4>
-                                                        <p>Pay with Razorpay.</p>
+                                                        <h4 class="payment-box-title"> Pay with Online</h4>
+                                                        <p>Pay with Online.</p>
                                                         <button type="button" class="button"
                                                             name="checkout_place_order" id="place_order"
                                                             value="Place order" data-value="Place order">Place
@@ -855,10 +837,7 @@ $(document).ready(function(){
     $("input[name='payment-input']").change(function(){
       var coupon = $(document).find('#coupon-code').val();
       if(coupon != ""){
-        $('#couponform').find('button').attr('id', 'apply-coupon');
-        $('#couponform').find('button').html('Apply');
-        $('#coupon-code').attr('readonly', false);
-        applyc();
+        $(document).find('#remove-coupon').click();
       }
     });
 
