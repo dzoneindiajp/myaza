@@ -1,0 +1,44 @@
+
+<?php $__env->startSection('content'); ?>
+    <div class="card">
+        <div class="card-header">
+                <?php echo e(trans('global.create')); ?> Shipping
+                <a class="btn btn-secondary float-right" href="<?php echo e(route('admin.shipping.index')); ?>">
+                    Back to Shipping
+                </a>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="<?php echo e(route('admin.shipping.store')); ?>" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="required" for="ps_pincode">Pincode</label>
+                        <input class="form-control" type="text" name="ps_pincode" id="ps_pincode" value="" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="required" for="ps_price">Weight Range</label>
+                        <select class="form-control" name="ps_weight_id" required>
+                            <option value="">Select Weight Range</option>
+                            <?php foreach($categories as $cat){ ?>
+                                <option value="<?php echo $cat->id; ?>"><?php echo $cat->weight_from.'-'.$cat->weight_to; ?> Kg</option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="required" for="ps_price">Cost</label>
+                        <input class="form-control" type="text" name="ps_price" id="ps_price" value="" required>
+                    </div>
+
+                    <div class="form-group col-md-12  text-right">
+                        <button class="btn btn-success " type="submit">
+                            <?php echo e(trans('global.save')); ?>
+
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\myaza\resources\views/admin/shipping/create.blade.php ENDPATH**/ ?>

@@ -2,9 +2,17 @@
 @section('content')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-primary" href="{{ route('admin.shipping.create') }}">
-                    Add Shipping
-                </a>
+                <form id="import_pincode_form" action="{{ route('admin.shipping.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <a class="btn btn-primary" href="{{ route('admin.shipping.create') }}">
+                        Add Shipping
+                    </a>
+                    <input type="file" name="file" id="import_pincode_file" accept=".xlsx" onchange="this.form.submit()" style="display: none">
+                    <button class="btn btn-primary import_pincode_btn" type="button">
+                        Import
+                    </button>
+                </form>
             </div>
         </div>
     <div class="card">
@@ -44,6 +52,9 @@
 @parent
 <script>
     $(function () {
+        $(".import_pincode_btn").click(function (e) { 
+            $("#import_pincode_file").click();
+        });
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';

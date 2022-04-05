@@ -184,6 +184,7 @@ Route::delete('city/destroy', [CityController::class, 'massDestroy'])
     Route::resource('weight', WeightController::class);
 
     Route::post('shipping/store',[ShippingController::class, 'store'])->name('shipping.store');
+    Route::post('shipping/import',[ShippingController::class, 'import'])->name('shipping.import');
     Route::delete('shipping/destroy', [ShippingController::class, 'massDestroy'])->name('shipping.massDestroy');
     Route::resource('shipping', ShippingController::class);
     

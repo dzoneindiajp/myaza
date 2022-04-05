@@ -15,6 +15,9 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Shipping;
 use App\Models\Weight;
 
+use App\Imports\ShippingImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class ShippingController extends Controller
 {
@@ -42,7 +45,7 @@ class ShippingController extends Controller
 
             $table->editColumn('weight', function ($row) {
                 $comment = Weight::find($row->ps_weight_id);
-                return (isset($comment->id))?$comment->weight_from.'-'.$comment->weight_to.' Kg':$row->id;
+                return (isset($comment->id))?$comment->weight_from.'-'.$comment->weight_to.' Kg':'';
             });
 
             $table->rawColumns(['actions','ps_pincode','id','weight','ps_price']);
@@ -123,5 +126,13 @@ class ShippingController extends Controller
         $mail=Shipping::find($id);
         $mail->delete($mail->id);
         return back()->with('success','Shipping deleted successfully.');
+    }
+
+    public function import(){
+        
+        ini_set('max_execution_time', '500');
+        Excel::import(new ShippingImport,request()->file('file'));
+             
+        return back()->with("message", "Pincode import successfully.");
     }
 }
