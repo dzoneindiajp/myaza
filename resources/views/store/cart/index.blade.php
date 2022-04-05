@@ -140,7 +140,7 @@
                               </tr> --}}
                               <tr class="tax-totals tax">
                                 <th>GST</th>
-                                <td data-title="GST" id="total_tax">₹<?php echo $tax ; ?></td>
+                                <td data-title="GST" id="total_tax">₹<?php echo number_format($tax,2) ; ?></td>
                               </tr>
                               <tr class="order-total">
                                 <th>Total</th>

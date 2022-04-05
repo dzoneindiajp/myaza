@@ -35,7 +35,8 @@ class CheckoutController extends Controller
        $country = Country::get();
        $coupon_discount = ($coupon_discount>0)?$coupon_discount:0;
         $grandTotal  = $carttotal-$coupon_discount;
-        $tax = $this->getTotalTax();
+        $tax = ($grandTotal / 100) * 1.12;
+        $grandTotal = $grandTotal + $tax;
         $carttotal = $carttotal-$tax;
        return view('store.checkout.index', compact('addresses','grandTotal','coupon','coupon_discount','carts','carttotal','loggedIn','tax','user_wallet','country'));
     }
@@ -67,15 +68,29 @@ class CheckoutController extends Controller
         
         $doWeDeliver = (isset($deliveryPossible->id))?1:0;
         
-        $charges = ($doWeDeliver>0)?$deliveryPossible->ps_price:0;
+        $charges = 0;
         
         $coupon_discount = (\Session::get('coupon_discount'))?\Session::get('coupon_discount'):0;
         $carttotal = \Cart::getTotal();
+
         $coupon_discount = ($coupon_discount>0)?$coupon_discount:0;
+        $carttotal  = $carttotal-$coupon_discount;
+        $tax = ($carttotal / 100) * 1.12;
+        $carttotal = $carttotal-$tax;
+        $grandTotal = $carttotal + $tax;
+
+        $product_qty = \Cart::getTotalQuantity();
+        if($product_qty >= 1 && $product_qty <= 5){
+            $charges = 99;
+        } else {
+            $charges = 199;
+        }
+        // $coupon_discount = ($coupon_discount>0)?$coupon_discount:0;
+        // $grandTotal  = $carttotal-$coupon_discount;
         
-        $grandTotal  = $carttotal-$coupon_discount;
+        // $tax = ($grandTotal / 100) * 1.12;
+        // $grandTotal = $grandTotal + $tax;
         $grandTotal = ($charges>0)? $grandTotal+$charges:$grandTotal;
-        
         return response()->json(['totalWeight'=>$tweight,'possiblility'=>$doWeDeliver,'charges'=>$charges,'grandTotal'=>$grandTotal],200);
     }
     

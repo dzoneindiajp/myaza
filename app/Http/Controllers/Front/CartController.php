@@ -29,13 +29,22 @@ class CartController extends Controller
             \Session::put('coupon', '');
             \Session::put('coupon_discount', 0);
         }
-        $coupon   = \Session::get('coupon');
-        $cdiscount = \Session::get('coupon_discount');
-        $cdiscount = ($cdiscount>0)?$cdiscount:0;
-        $grandTotal  = $total-$cdiscount;
-        $tax = $this->getTotalTax();
-        $total = $total-$tax;
-        return view('store.cart.index', compact('carts','coupons','total','isEmpty','coupon','cdiscount','grandTotal','tax'));
+
+
+        // $carttotal  = $carttotal-$coupon_discount;
+        // $tax = ($carttotal / 100) * 1.12;
+        // $carttotal = $carttotal-$tax;
+        // $grandTotal = $carttotal + $tax;
+
+        $carttotal  = $total;
+        $tax = ($carttotal / 100) * 1.12;
+        
+        $total = number_format($carttotal-$tax, 2);
+        $grandTotal = $carttotal + $tax;
+
+        // $tax = $this->getTotalTax();
+        // $total = $total-$tax;
+        return view('store.cart.index', compact('carts','coupons','total','isEmpty','grandTotal','tax'));
     }
     
     
@@ -70,10 +79,15 @@ class CartController extends Controller
                        <strong>Subtotal:</strong> <span class="mini-cart-price"><span class="price">₹0</span> </span>
                     </p>';
         }
-        $cdiscount = \Session::get('coupon_discount');
-        $cdiscount = ($cdiscount>0)?$cdiscount:0;
-        $grandTotal  = $total-$cdiscount;
-        $tax = $this->getTotalTax();
+
+        $tax = ($total / 100) * 1.12;
+        $total = $total-$tax;
+        $grandTotal = $total + $tax;
+
+        $grandTotal = number_format($grandTotal, 2);
+        $tax = number_format($tax, 2);
+        $total = number_format($total, 2);
+
         return response()->json(['html'=>$chtml,'qty'=>$totalQty,'carttotal'=>$total,'grandTotal'=>$grandTotal,'tax'=>$tax],200);
     }
     
@@ -201,12 +215,14 @@ class CartController extends Controller
                $total = \Cart::getTotal();
                $cdiscount = ($cdiscount>0)?$cdiscount:0;
                $grandTotal  = $total-$cdiscount;
-
+               $tax = ($grandTotal / 100) * 1.12;
+               $grandTotal = number_format($grandTotal + $tax , 2);
                return response()->json([
                     'success' => true,
                     'code' => 200,
                     'message' => 'Coupon Apply successfully',
                     'coupon_price' => $discount,
+                    'tax' => $tax,
                     'grandTotal'=>$grandTotal
                 ]);
 

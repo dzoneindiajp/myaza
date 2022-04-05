@@ -49,6 +49,7 @@ class PaymentController extends Controller
     }
 
     function placeorder(Request $request){
+      
         $cartItems = \Cart::getContent();
 		
 		/* echo " placeorder <pre>"; print_r($cartItems); die; */
@@ -189,7 +190,8 @@ class PaymentController extends Controller
 				
 				$carttotal = \Cart::getTotal();
 				$grandTotal  = $carttotal-$coupon_discout;
-                $tax = $this->getTotalTax();
+                $tax = ($grandTotal / 100) * 1.12;
+                $grandTotal = $grandTotal + $tax;
                 $carttotal = $carttotal-$tax;
                 
 				$clr_cart = \Cart::clear(); 

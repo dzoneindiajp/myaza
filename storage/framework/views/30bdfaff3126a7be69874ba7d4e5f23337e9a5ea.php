@@ -97,7 +97,7 @@
                                                     <tr class="cart-subtotal">
                                                         <td>Base Value</td>
                                                         <td class="text-right"><span
-                                                                class="price">₹<?php echo $carttotal; ?></span></td>
+                                                                class="price">₹<?php echo number_format($carttotal, 2); ?></span></td>
                                                     </tr>
                                                     <tr class="shipping-totals">
                                                         <td>Coupon Discount</td>
@@ -107,7 +107,7 @@
                                                     <tr class="tax-totals tax">
                                                         <td>GST</td>
                                                         <td data-title="Tax" id="total_tax" class="text-right">
-                                                            ₹<?php echo $tax; ?></td>
+                                                            ₹<?php echo number_format($tax, 2); ?></td>
                                                     </tr>
                                                     <tr class="shipping-totals shipping">
                                                         <td>Shipping Charges</td>
@@ -117,7 +117,7 @@
                                                     <tr class="order-total">
                                                         <td><strong>Total</strong></td>
                                                         <td class="text-right"><strong><span
-                                                                    class="price">₹<?php echo $grandTotal; ?></span></strong>
+                                                                    class="price">₹<?php echo number_format($grandTotal, 2); ?></span></strong>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -864,7 +864,8 @@ $(document).ready(function(){
                   if(response.code === 200){
                       $(document).find('#coupon-discount').html('₹'+response.coupon_price);
                       $('.order-total').find('.price').html('₹'+response.grandTotal);
-                      
+                        $('#payableamount').val(response.grandTotal);
+                        setShippingCharges($('.selected-item').attr('data-id'));
                       $('#coupon-code').attr('readonly',true);
                       
                       $('#couponform').find('button').attr('id','remove-coupon');
@@ -906,7 +907,9 @@ $(document).ready(function(){
                 $('#cover-spin').hide(0);
                 if (response.code === 200) {
                     $(document).find('#coupon-discount').html('₹0');
+                    $('#payableamount').val(response.grandTotal);
                     $('.order-total').find('.price').html('₹' + response.grandTotal);
+                    setShippingCharges($('.selected-item').attr('data-id'));
 
                     $('#coupon-code').attr('readonly', false);
 
