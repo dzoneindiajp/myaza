@@ -37,7 +37,16 @@ class CheckoutController extends Controller
         $grandTotal  = $carttotal-$coupon_discount;
         $tax = ($grandTotal / 100) * 1.12;
         $grandTotal = $grandTotal + $tax;
-        $carttotal = $carttotal-$tax;
+
+        $charges = 0;
+        $product_qty = \Cart::getTotalQuantity();
+        if($product_qty >= 1 && $product_qty <= 5){
+            $charges = 99;
+        } else {
+            $charges = 199;
+        }
+        $grandTotal = ($charges>0)? $grandTotal+$charges:$grandTotal;
+
        return view('store.checkout.index', compact('addresses','grandTotal','coupon','coupon_discount','carts','carttotal','loggedIn','tax','user_wallet','country'));
     }
 
@@ -76,22 +85,21 @@ class CheckoutController extends Controller
         $coupon_discount = ($coupon_discount>0)?$coupon_discount:0;
         $carttotal  = $carttotal-$coupon_discount;
         $tax = ($carttotal / 100) * 1.12;
-        $carttotal = $carttotal-$tax;
         $grandTotal = $carttotal + $tax;
 
-        $product_qty = \Cart::getTotalQuantity();
-        if($product_qty >= 1 && $product_qty <= 5){
-            $charges = 99;
-        } else {
-            $charges = 199;
+        if($request->payment_input == "cod"){
+            $product_qty = \Cart::getTotalQuantity();
+            if($product_qty >= 1 && $product_qty <= 5){
+                $charges = 99;
+            } else {
+                $charges = 199;
+            }
         }
-        // $coupon_discount = ($coupon_discount>0)?$coupon_discount:0;
-        // $grandTotal  = $carttotal-$coupon_discount;
         
-        // $tax = ($grandTotal / 100) * 1.12;
-        // $grandTotal = $grandTotal + $tax;
         $grandTotal = ($charges>0)? $grandTotal+$charges:$grandTotal;
-        return response()->json(['totalWeight'=>$tweight,'possiblility'=>$doWeDeliver,'charges'=>$charges,'grandTotal'=>$grandTotal],200);
+        $grandTotal = round($grandTotal);
+        $tax = number_format($tax, 2);
+        return response()->json(['totalWeight'=>$tweight,'possiblility'=>$doWeDeliver,'tax' => $tax, 'charges'=>$charges,'grandTotal'=>$grandTotal],200);
     }
     
     function delivery(Request $request){

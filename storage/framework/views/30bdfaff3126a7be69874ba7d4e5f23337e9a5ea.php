@@ -572,12 +572,15 @@ $(document).ready(function(){
     function setShippingCharges(id) {
         if (id > 0) {
             $('#cover-spin').show(0);
+            var payment_input = $("input[name='payment-input']:checked").val();
             $.get("<?php echo e(route('checkout.shipping.charges')); ?>", {
-                'id': id
+                'id': id,
+                'payment_input': payment_input,
             }, function(v) {
                 if (v.possiblility == 1) {
                     $('.order-total').find('.price').html('₹' + v.grandTotal);
                     $('#payableamount').val(v.grandTotal);
+                    $('#total_tax').html('₹' + v.tax);
                     $('#shipping_Charges').html('₹' + v.charges);
                     $('#shippingc').val(v.charges);
                     $('button[name="checkout_place_order"]').attr('disabled', false);
@@ -838,6 +841,8 @@ $(document).ready(function(){
       var coupon = $(document).find('#coupon-code').val();
       if(coupon != ""){
         $(document).find('#remove-coupon').click();
+      } else {
+        setShippingCharges($('.selected-item').attr('data-id'));
       }
     });
 

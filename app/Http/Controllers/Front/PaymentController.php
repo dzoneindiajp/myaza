@@ -191,8 +191,7 @@ class PaymentController extends Controller
 				$carttotal = \Cart::getTotal();
 				$grandTotal  = $carttotal-$coupon_discout;
                 $tax = ($grandTotal / 100) * 1.12;
-                $grandTotal = $grandTotal + $tax;
-                $carttotal = $carttotal-$tax;
+                $grandTotal = $request->payableamount;
                 
 				$clr_cart = \Cart::clear(); 
 				

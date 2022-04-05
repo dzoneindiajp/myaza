@@ -39,8 +39,8 @@ class CartController extends Controller
         $carttotal  = $total;
         $tax = ($carttotal / 100) * 1.12;
         
-        $total = number_format($carttotal-$tax, 2);
-        $grandTotal = $carttotal + $tax;
+        $total = number_format($carttotal, 2);
+        $grandTotal = round($carttotal + $tax);
 
         // $tax = $this->getTotalTax();
         // $total = $total-$tax;
@@ -80,11 +80,11 @@ class CartController extends Controller
                     </p>';
         }
 
+
         $tax = ($total / 100) * 1.12;
-        $total = $total-$tax;
         $grandTotal = $total + $tax;
 
-        $grandTotal = number_format($grandTotal, 2);
+        $grandTotal = number_format(round($grandTotal), 2);
         $tax = number_format($tax, 2);
         $total = number_format($total, 2);
 
