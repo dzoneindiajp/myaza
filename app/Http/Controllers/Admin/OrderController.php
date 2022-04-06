@@ -41,14 +41,15 @@ class OrderController extends Controller
                 return '<div class="text-center"><span class="badge badge-info p-2">'.$row->order_id.'</span></div>';
             });
             $table->editColumn('product', function ($row) {
-                $name =  $row->orders ? $row->orders[0]->name : '';
+                $name =  $row->orders && !empty($row->orders[0]) ? $row->orders[0]->name : '';
                 return '<div class="text-center"><span class="badge badge-dark p-2">'.$name.'</span></div>';
             });
 
             $table->editColumn('image', function ($row) {
+                $image = $row->orders && !empty($row->orders[0]) ? $row->orders[0]->images : "";
                 return '<div class="text-center">
                             <a href="#" target="_blank">
-                            <img src="'.asset("file").'/'.$row->orders[0]->images.'" width="50px" height="50px">
+                            <img src="'.asset("file").'/'.$image.'" width="50px" height="50px">
                             </a>
                         </div>';
             });
@@ -77,12 +78,12 @@ class OrderController extends Controller
 
 
             $table->editColumn('total', function ($row) {
-                return '<div class="text-center"><span class="badge p-2" style="background-color : #4c6f9c; color : white;">₹'.$row->order_discount->sub_total.'</span></div>';
+                return '<div class="text-center"><span class="badge p-2" style="background-color : #4c6f9c; color : white;">₹'.$row->order_discount && isset($row->order_discount->sub_total) ? $row->order_discount->sub_total : "" .'</span></div>';
             });
 
 
             $table->editColumn('discount', function ($row) {
-                return '<div class="text-center"><span class="badge p-2" style="background-color : #4c6f9c; color : white;">₹'.$row->order_discount->discount.'</span></div>';
+                return '<div class="text-center"><span class="badge p-2" style="background-color : #4c6f9c; color : white;">₹'.$row->order_discount && isset($row->order_discount->discount) ? $row->order_discount->discount : "" .'</span></div>';
             });
 
 

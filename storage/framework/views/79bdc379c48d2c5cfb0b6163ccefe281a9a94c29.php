@@ -1,0 +1,173 @@
+
+
+<?php $__env->startPush('stylesheet'); ?>
+    <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.1.1/css/dataTables.dateTime.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
+    <div class="card">
+        <div class="card-header">
+            Orders Report
+        </div>
+
+        <div class="card-body">
+            <form action="" method="GET">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" name="start_date" id="start_date" class="form-control start_date datepicker"
+                            placeholder="Start Date" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="end_date" id="end_date" class="form-control end_date datepicker" placeholder="End Date"
+                            readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary search_btn" value="search">Search</button>
+                        <a href="<?php echo e(url('backoffice/reports/orders')); ?>" class="btn btn-danger clear_btn">Clear</a>
+                    </div>
+                </div>
+            </form>
+            <br>
+
+        </div>
+        <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Role">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Order ID
+                    </th>
+                    <th>
+                        User
+                    </th>
+
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    
+
+                    <th>
+                        Date
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"
+        integrity="sha512-Y+0b10RbVUTf3Mi0EgJue0FoheNzentTMMIE2OreNbqnUPNbQj8zmjK3fs5D2WhQeGWIem2G2UkKjAL/bJ/UXQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.1.1/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <?php echo \Illuminate\View\Factory::parentPlaceholder('scripts'); ?>
+    <script>
+        $(function() {
+            var minDate, maxDate;
+            minDate = new DateTime($('#min'), {
+                format: 'MMMM Do YYYY'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'MMMM Do YYYY'
+            });
+
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            let dtOverrideGlobals = {
+                buttons: dtButtons,
+                processing: true,
+                serverSide: true,
+                retrieve: true,
+                aaSorting: [],
+                dom: 'Bfrtlp',
+                buttons: ['copy', 'excel', 'csv', 'pdf', 'print'],
+                ajax: {
+                    url: "<?php echo e(route('admin.reports.orders')); ?>",
+                    data: function (d) {
+                        d.start_date = $('#start_date').val(),
+                        d.end_date = $('#end_date').val()
+                    }
+                },
+                columns: [{
+                        data: 'order_id',
+                        name: 'order_id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'product',
+                        name: 'product'
+                    },
+                    {
+                        data: 'image',
+                        name: 'image'
+                    },
+                    {
+                        data: 'amount',
+                        name: 'amount'
+                    },
+                    //   { data: 'transaction_id', name: 'transaction_id' },
+                    {
+                        data: 'created',
+                        name: 'created'
+                    },
+                ],
+                orderCellsTop: true,
+                order: [
+                    [1, 'desc']
+                ],
+                pageLength: 25,
+            };
+            let table = $('.datatable-Role').DataTable(dtOverrideGlobals);
+            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
+
+            var startDate = new Date();
+            var FromEndDate = new Date();
+            var ToEndDate = new Date();
+            ToEndDate.setDate(ToEndDate.getDate() + 365);
+
+            $('.start_date').datepicker({
+                    format: 'dd-mm-yyyy',
+                    weekStart: 1,
+                    autoclose: true
+                })
+                .on('changeDate', function(selected) {
+                    startDate = new Date(selected.date.valueOf());
+                    startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+                    $('.end_date').datepicker('setStartDate', startDate);
+                });
+            $('.end_date')
+                .datepicker({
+                    format: 'dd-mm-yyyy',
+                    weekStart: 1,
+                    startDate: startDate,
+                    endDate: ToEndDate,
+                    autoclose: true
+                })
+                .on('changeDate', function(selected) {
+                    FromEndDate = new Date(selected.date.valueOf());
+                    FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+                    $('.start_date').datepicker('setEndDate', FromEndDate);
+            });
+
+            $(".search_btn").click(function (e) { 
+                table.draw();
+            });
+
+        });
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\myaza\resources\views/admin/reports/orders.blade.php ENDPATH**/ ?>

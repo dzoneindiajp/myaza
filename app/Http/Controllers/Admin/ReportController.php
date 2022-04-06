@@ -79,7 +79,17 @@ class ReportController extends Controller
     {
       // abort_if(Gate::denies('attribute_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
       if ($request->ajax()) {
-          $query = UserOrder::all();
+          $query = new UserOrder;
+          if($request->start_date != ""){
+            $start_date = date("Y-m-d", strtotime($request->start_date)).' 00:00:00';
+            $query = $query->where("created_at", ">=", $start_date);
+          }
+          if($request->end_date != ""){
+              $end_date = date("Y-m-d", strtotime($request->end_date)).' 23:59:59';
+              $query = $query->where("created_at", "<=", $end_date);
+          }
+          
+          $query = $query->get();
           $table = Datatables::of($query);
 
           $table->editColumn('order_id', function ($row) {
@@ -203,9 +213,9 @@ class ReportController extends Controller
               return $html;
           });
 
-          $table->editColumn('transaction_id', function ($row) {
-                return '<div class="text-center"><span class="badge badge-warning p-2">'.$row->transaction_id.'</span></div>';
-          });
+          // $table->editColumn('transaction_id', function ($row) {
+          //       return '<div class="text-center"><span class="badge badge-warning p-2">'.$row->transaction_id.'</span></div>';
+          // });
 
 
 

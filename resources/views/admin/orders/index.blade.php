@@ -134,6 +134,7 @@
                 buttons: dtButtons,
                 processing: true,
                 serverSide: true,
+                scrollX: true,
                 retrieve: true,
                 aaSorting: [],
                 ajax: "{{ url('/backoffice/orders') }}",
@@ -143,7 +144,6 @@
                 { data: 'name', name: 'name' },
                 { data: 'image', name: 'image', sortable: false, searchable: false },
                 { data: 'customer', name: 'customer' },
-
                 { data: 'total', name: 'total' },
                 { data: 'discount', name: 'discount' },
                 { data: 'payment', name: 'payment' },

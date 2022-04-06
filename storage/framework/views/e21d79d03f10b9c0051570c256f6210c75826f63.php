@@ -1,8 +1,10 @@
 <?php
 $curr_route = request()->segment(2);
+$curr_route2 = request()->segment(3);
 $attribute_routes = ['colors', 'brands', 'sizes', 'attributes', 'attribute-values', 'map-attributes', 'fit', 'sleeve', 'neck', 'craft', 'collection', 'sale'];
 $product_routes = ['products', 'bulk-product', 'media-library', 'product-category'];
 $order_routes = ['orders', 'bulk-orders'];
+$reports_routes = ['orders'];
 $setting_routes = ['page', 'company-detail', 'social-media'];
 $user_routes = ['permissions', 'roles', 'users'];
 ?>
@@ -236,42 +238,42 @@ $user_routes = ['permissions', 'roles', 'users'];
                 <?php endif; ?>
 
 
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('product_management_access')): ?>
-                <li class="nav-item has-treeview <?php echo e(in_array($curr_route, $order_routes) ? 'menu-open' : ''); ?>">
-                    <a class="nav-link nav-dropdown-toggle" href="#">
-                        <i class="fa-fw nav-icon fas fa-truck">
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('product_management_access')): ?>
+                    <li class="nav-item has-treeview <?php echo e(in_array($curr_route, $order_routes) ? 'menu-open' : ''); ?>">
+                        <a class="nav-link nav-dropdown-toggle" href="#">
+                            <i class="fa-fw nav-icon fas fa-truck">
 
-                        </i>
-                        <p>
-                            <?php echo e(trans('cruds.orderManagement.title')); ?>
+                            </i>
+                            <p>
+                                <?php echo e(trans('cruds.orderManagement.title')); ?>
 
-                            <i class="right fa fa-fw fa-angle-left nav-icon"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('product_access')): ?>
-                            <li class="nav-item">
-                                <a class="nav-link <?php echo e($curr_route == 'orders' ? 'active' : ''); ?>"
-                                    href="<?php echo e(route('admin.orders.index')); ?>">
-                                    <i class="fa-fw nav-icon fas fa-archive"></i>
-                                    <p>
-                                        Orders
-                                    </p>
-                                </a>
-                            </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link <?php echo e($curr_route == 'bulk-orders' ? 'active' : ''); ?>"
-                                    href="<?php echo e(route('admin.orders.bulk')); ?>">
-                                    <i class="fa-fw nav-icon fa fa-car"></i>
-                                    <p>
-                                        Bulk Orders
-                                    </p>
-                                </a>
-                            </li> -->
-                        <?php endif; ?>
-                    </ul>
-                </li>
-            <?php endif; ?>
+                                <i class="right fa fa-fw fa-angle-left nav-icon"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('product_access')): ?>
+                                <li class="nav-item">
+                                    <a class="nav-link <?php echo e($curr_route == 'orders' ? 'active' : ''); ?>"
+                                        href="<?php echo e(route('admin.orders.index')); ?>">
+                                        <i class="fa-fw nav-icon fas fa-archive"></i>
+                                        <p>
+                                            Orders
+                                        </p>
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                        <a class="nav-link <?php echo e($curr_route == 'bulk-orders' ? 'active' : ''); ?>"
+                                            href="<?php echo e(route('admin.orders.bulk')); ?>">
+                                            <i class="fa-fw nav-icon fa fa-car"></i>
+                                            <p>
+                                                Bulk Orders
+                                            </p>
+                                        </a>
+                                    </li> -->
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                <?php endif; ?>
 
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('coupon_access')): ?>
                     <li class="nav-item">
@@ -304,15 +306,15 @@ $user_routes = ['permissions', 'roles', 'users'];
 
 
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('master_access')): ?>
-                <!-- <li class="nav-item">
-                    <a href="<?php echo e(route('admin.home.banners.index')); ?>"
-                        class="nav-link <?php echo e(request()->is('admin/home/banners') || request()->is('admin/home/banners/*') ? 'active' : ''); ?>">
-                        <i class="fa-fw nav-icon fas fa-map-marked-alt"></i>
-                        <p>
-                            Home Banners Management
-                        </p>
-                    </a>
-                </li> -->
+                    <!-- <li class="nav-item">
+                        <a href="<?php echo e(route('admin.home.banners.index')); ?>"
+                            class="nav-link <?php echo e(request()->is('admin/home/banners') || request()->is('admin/home/banners/*') ? 'active' : ''); ?>">
+                            <i class="fa-fw nav-icon fas fa-map-marked-alt"></i>
+                            <p>
+                                Home Banners Management
+                            </p>
+                        </a>
+                    </li> -->
                     <li class="nav-item has-treeview <?php echo e(request()->is('admin/sliders*') ? 'menu-open' : ''); ?>">
                         <a class="nav-link nav-dropdown-toggle" href="#">
                             <i class="fa-fw nav-icon fas fa-bookmark">
@@ -339,9 +341,10 @@ $user_routes = ['permissions', 'roles', 'users'];
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo e(route('admin.video-add.index')); ?>" class="nav-link <?php echo e($curr_route == 'video-add' ? 'active' : ''); ?>">
+                                    <a href="<?php echo e(route('admin.video-add.index')); ?>"
+                                        class="nav-link <?php echo e($curr_route == 'video-add' ? 'active' : ''); ?>">
                                         <i class="fa-fw nav-icon fa fa-video">
-                    
+
                                         </i>
                                         <p>
                                             Video home slider
@@ -349,7 +352,8 @@ $user_routes = ['permissions', 'roles', 'users'];
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?php echo e(route('admin.htext.index')); ?>" class="nav-link <?php echo e($curr_route == 'htext' ? 'active' : ''); ?>">
+                                    <a href="<?php echo e(route('admin.htext.index')); ?>"
+                                        class="nav-link <?php echo e($curr_route == 'htext' ? 'active' : ''); ?>">
                                         <i class="fa-fw nav-icon fa fa-file">
                                         </i>
                                         <p>
@@ -400,126 +404,159 @@ $user_routes = ['permissions', 'roles', 'users'];
                                 </li>
                             <?php endif; ?>
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('social_profile_type_access')): ?>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.social-profile-types.index')); ?>" class="nav-link <?php echo e(request()->is('admin/social-profile-types') || request()->is('admin/social-profile-types/*') ? 'active' : ''); ?>">
-                                    <i class="fa-fw nav-icon fas fa-cogs">
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('admin.social-profile-types.index')); ?>"
+                                        class="nav-link <?php echo e(request()->is('admin/social-profile-types') || request()->is('admin/social-profile-types/*') ? 'active' : ''); ?>">
+                                        <i class="fa-fw nav-icon fas fa-cogs">
 
-                                    </i>
-                                    <p>
-                                        <?php echo e(trans('cruds.socialProfileType.title')); ?>
+                                        </i>
+                                        <p>
+                                            <?php echo e(trans('cruds.socialProfileType.title')); ?>
 
-                                    </p>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('menu_access')): ?>
+                                        </p>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('menu_access')): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('admin.menus.index')); ?>"
+                                        class="nav-link <?php echo e(request()->is('admin/menus') || request()->is('admin/menus/*') ? 'active' : ''); ?>">
+                                        <i class="fa-fw nav-icon fas fa-cogs">
+
+                                        </i>
+                                        <p>
+                                            <?php echo e(trans('cruds.menu.title')); ?>
+
+                                        </p>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('blog_access')): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('admin.blogs.index')); ?>"
+                                        class="nav-link <?php echo e(request()->is('admin/blogs') || request()->is('admin/blogs/*') ? 'active' : ''); ?>">
+                                        <i class="fa-fw nav-icon fas fa-cogs">
+
+                                        </i>
+                                        <p>
+                                            <?php echo e(trans('cruds.blog.title')); ?>
+
+                                        </p>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('cms_page_access')): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('admin.cms-pages.index')); ?>"
+                                        class="nav-link <?php echo e(request()->is('admin/cms-pages') || request()->is('admin/cms-pages/*') ? 'active' : ''); ?>">
+                                        <i class="fa-fw nav-icon fas fa-cogs">
+
+                                        </i>
+                                        <p>
+                                            <?php echo e(trans('cruds.cmsPage.title')); ?>
+
+                                        </p>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('testimonial_access')): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('admin.testimonials.index')); ?>"
+                                        class="nav-link <?php echo e(request()->is('admin/testimonials') || request()->is('admin/testimonials/*') ? 'active' : ''); ?>">
+                                        <i class="fa-fw nav-icon fas fa-cogs">
+
+                                        </i>
+                                        <p>
+                                            <?php echo e(trans('cruds.testimonial.title')); ?>
+
+                                        </p>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+
+                <li class="nav-item has-treeview <?php echo e(in_array($curr_route2, $reports_routes) ? 'menu-open' : ''); ?>">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fa-fw nav-icon fas fa-truck">
+
+                        </i>
+                        <p>
+                            Report
+                            <i class="right fa fa-fw fa-angle-left nav-icon"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?php echo e(route('admin.menus.index')); ?>" class="nav-link <?php echo e(request()->is('admin/menus') || request()->is('admin/menus/*') ? 'active' : ''); ?>">
-                                <i class="fa-fw nav-icon fas fa-cogs">
-
-                                </i>
+                            <a class="nav-link <?php echo e($curr_route2 == 'orders' ? 'active' : ''); ?>"
+                                href="<?php echo e(route('admin.reports.orders')); ?>">
+                                <i class="fa-fw nav-icon fas fa-archive"></i>
                                 <p>
-                                    <?php echo e(trans('cruds.menu.title')); ?>
-
+                                    Orders Report
                                 </p>
                             </a>
                         </li>
-                    <?php endif; ?>
-                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('blog_access')): ?>
+                    </ul>
+                </li>
+
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('user_social_profile_access')): ?>
                     <li class="nav-item">
-                        <a href="<?php echo e(route('admin.blogs.index')); ?>" class="nav-link <?php echo e(request()->is('admin/blogs') || request()->is('admin/blogs/*') ? 'active' : ''); ?>">
-                            <i class="fa-fw nav-icon fas fa-cogs">
+                        <a href="<?php echo e(route('admin.user-social-profiles.index')); ?>"
+                            class="nav-link <?php echo e(request()->is('admin/user-social-profiles') || request()->is('admin/user-social-profiles/*') ? 'active' : ''); ?>">
+                            <i class="fa-fw nav-icon fas fa-user-secret">
 
                             </i>
                             <p>
-                                <?php echo e(trans('cruds.blog.title')); ?>
+                                <?php echo e(trans('cruds.userSocialProfile.title')); ?>
 
                             </p>
                         </a>
                     </li>
                 <?php endif; ?>
-                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('cms_page_access')): ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('store_access')): ?>
+                    <li class="nav-item">
+                        <a href="<?php echo e(route('admin.stores.index')); ?>"
+                            class="nav-link <?php echo e(request()->is('admin/stores') || request()->is('admin/stores/*') ? 'active' : ''); ?>">
+                            <i class="fa-fw nav-icon fas fa-store">
+
+                            </i>
+                            <p>
+                                <?php echo e(trans('cruds.store.title')); ?>
+
+                            </p>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('newsletter_access')): ?>
+                    <li class="nav-item">
+                        <a href="<?php echo e(route('admin.newsletters.index')); ?>"
+                            class="nav-link <?php echo e(request()->is('admin/newsletters') || request()->is('admin/newsletters/*') ? 'active' : ''); ?>">
+                            <i class="fa-fw nav-icon far fa-envelope">
+
+                            </i>
+                            <p>
+                                <?php echo e(trans('cruds.newsletter.title')); ?>
+
+                            </p>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+
                 <li class="nav-item">
-                    <a href="<?php echo e(route('admin.cms-pages.index')); ?>" class="nav-link <?php echo e(request()->is('admin/cms-pages') || request()->is('admin/cms-pages/*') ? 'active' : ''); ?>">
+                    <a href="<?php echo e(route('admin.settings')); ?>"
+                        class="nav-link <?php echo e(request()->is('admin/settings') || request()->is('admin/settings/*') ? 'active' : ''); ?>">
                         <i class="fa-fw nav-icon fas fa-cogs">
 
                         </i>
                         <p>
-                            <?php echo e(trans('cruds.cmsPage.title')); ?>
+                            <?php echo e(trans('cruds.setting.title')); ?>
 
                         </p>
                     </a>
                 </li>
-            <?php endif; ?>
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('testimonial_access')): ?>
-            <li class="nav-item">
-                <a href="<?php echo e(route('admin.testimonials.index')); ?>" class="nav-link <?php echo e(request()->is('admin/testimonials') || request()->is('admin/testimonials/*') ? 'active' : ''); ?>">
-                    <i class="fa-fw nav-icon fas fa-cogs">
-
-                    </i>
-                    <p>
-                        <?php echo e(trans('cruds.testimonial.title')); ?>
-
-                    </p>
-                </a>
-            </li>
-        <?php endif; ?>
-                        </ul>
-                    </li>
-                <?php endif; ?>
-                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('user_social_profile_access')): ?>
-                <li class="nav-item">
-                    <a href="<?php echo e(route('admin.user-social-profiles.index')); ?>" class="nav-link <?php echo e(request()->is('admin/user-social-profiles') || request()->is('admin/user-social-profiles/*') ? 'active' : ''); ?>">
-                        <i class="fa-fw nav-icon fas fa-user-secret">
-
-                        </i>
-                        <p>
-                            <?php echo e(trans('cruds.userSocialProfile.title')); ?>
-
-                        </p>
-                    </a>
-                </li>
-            <?php endif; ?>
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('store_access')): ?>
-            <li class="nav-item">
-                <a href="<?php echo e(route('admin.stores.index')); ?>" class="nav-link <?php echo e(request()->is('admin/stores') || request()->is('admin/stores/*') ? 'active' : ''); ?>">
-                    <i class="fa-fw nav-icon fas fa-store">
-
-                    </i>
-                    <p>
-                        <?php echo e(trans('cruds.store.title')); ?>
-
-                    </p>
-                </a>
-            </li>
-        <?php endif; ?>
-
-        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('newsletter_access')): ?>
-        <li class="nav-item">
-            <a href="<?php echo e(route('admin.newsletters.index')); ?>" class="nav-link <?php echo e(request()->is('admin/newsletters') || request()->is('admin/newsletters/*') ? 'active' : ''); ?>">
-                <i class="fa-fw nav-icon far fa-envelope">
-
-                </i>
-                <p>
-                    <?php echo e(trans('cruds.newsletter.title')); ?>
-
-                </p>
-            </a>
-        </li>
-        <?php endif; ?>
-
-
-        <li class="nav-item">
-            <a href="<?php echo e(route('admin.settings')); ?>" class="nav-link <?php echo e(request()->is('admin/settings') || request()->is('admin/settings/*') ? 'active' : ''); ?>">
-                <i class="fa-fw nav-icon fas fa-cogs">
-
-                </i>
-                <p>
-                    <?php echo e(trans('cruds.setting.title')); ?>
-
-                </p>
-            </a>
-        </li>
 
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('product_management_access')): ?>
                     
