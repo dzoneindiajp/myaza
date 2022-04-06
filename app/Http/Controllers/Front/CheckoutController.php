@@ -32,19 +32,15 @@ class CheckoutController extends Controller
             $user_wallet = DB::table('wallets')->select('amount')->where('user_id',Auth::user()->id);
        }
 
-       $country = Country::get();
-       $coupon_discount = ($coupon_discount>0)?$coupon_discount:0;
-        $grandTotal  = $carttotal-$coupon_discount;
-        $tax = ($grandTotal / 100) * 1.12;
-        $grandTotal = $grandTotal + $tax;
+        $country = Country::get();
+        $coupon_discount = ($coupon_discount>0)?$coupon_discount:0;
+        $carttotal  = $carttotal-$coupon_discount;
+        $tax = ($carttotal / 100) * 1.12;
+        $carttotal = $carttotal - $tax;
+        $grandTotal = $carttotal + $tax;
+        $carttotal = $carttotal + $coupon_discount;
 
         $charges = 0;
-        $product_qty = \Cart::getTotalQuantity();
-        if($product_qty >= 1 && $product_qty <= 5){
-            $charges = 99;
-        } else {
-            $charges = 199;
-        }
         $grandTotal = ($charges>0)? $grandTotal+$charges:$grandTotal;
 
        return view('store.checkout.index', compact('addresses','grandTotal','coupon','coupon_discount','carts','carttotal','loggedIn','tax','user_wallet','country'));
@@ -83,9 +79,16 @@ class CheckoutController extends Controller
         $carttotal = \Cart::getTotal();
 
         $coupon_discount = ($coupon_discount>0)?$coupon_discount:0;
+        // $carttotal  = $carttotal-$coupon_discount;
+        // $tax = ($carttotal / 100) * 1.12;
+        // $carttotal = $carttotal - $tax; 
+        // $grandTotal = $carttotal + $tax;
+
         $carttotal  = $carttotal-$coupon_discount;
         $tax = ($carttotal / 100) * 1.12;
+        $carttotal = $carttotal - $tax;
         $grandTotal = $carttotal + $tax;
+        $carttotal = $carttotal + $coupon_discount;
 
         if($request->payment_input == "cod"){
             $product_qty = \Cart::getTotalQuantity();
@@ -99,7 +102,8 @@ class CheckoutController extends Controller
         $grandTotal = ($charges>0)? $grandTotal+$charges:$grandTotal;
         $grandTotal = round($grandTotal);
         $tax = number_format($tax, 2);
-        return response()->json(['totalWeight'=>$tweight,'possiblility'=>$doWeDeliver,'tax' => $tax, 'charges'=>$charges,'grandTotal'=>$grandTotal],200);
+        $carttotal = number_format($carttotal, 2);
+        return response()->json(['totalWeight'=>$tweight,'possiblility'=>$doWeDeliver,'tax' => $tax, 'carttotal' => $carttotal, 'charges'=>$charges,'grandTotal'=>$grandTotal],200);
     }
     
     function delivery(Request $request){

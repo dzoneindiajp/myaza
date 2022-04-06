@@ -578,6 +578,7 @@ $(document).ready(function(){
                 'payment_input': payment_input,
             }, function(v) {
                 if (v.possiblility == 1) {
+                    $('.cart-subtotal').find('.price').html('₹' + v.carttotal);
                     $('.order-total').find('.price').html('₹' + v.grandTotal);
                     $('#payableamount').val(v.grandTotal);
                     $('#total_tax').html('₹' + v.tax);
@@ -868,6 +869,7 @@ $(document).ready(function(){
                   $('#cover-spin').hide(0);
                   if(response.code === 200){
                       $(document).find('#coupon-discount').html('₹'+response.coupon_price);
+                      $('.cart-subtotal').find('.price').html('₹'+response.carttotal);
                       $('.order-total').find('.price').html('₹'+response.grandTotal);
                         $('#payableamount').val(response.grandTotal);
                         setShippingCharges($('.selected-item').attr('data-id'));
@@ -898,6 +900,7 @@ $(document).ready(function(){
 
     $(document).on('click', '#apply-coupon', function() {
         applyc();
+        setShippingCharges($('.selected-item').attr('data-id'));
     });
 
     $(document).on('click', '#remove-coupon', function() {

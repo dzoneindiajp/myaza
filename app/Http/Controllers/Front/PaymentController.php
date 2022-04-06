@@ -123,7 +123,6 @@ class PaymentController extends Controller
 			
 			$uorder->status = 0;
 			$uorder->save();
-			
 			foreach($cartItems as $item){
 				$productid = explode("_",$item->id)[0];
 				$order = new Order;
@@ -189,10 +188,12 @@ class PaymentController extends Controller
 				]);
 				
 				$carttotal = \Cart::getTotal();
-				$grandTotal  = $carttotal-$coupon_discout;
-                $tax = ($grandTotal / 100) * 1.12;
+                $carttotal  = $carttotal-$coupon_discout;
+                $tax = ($carttotal / 100) * 1.12;
+                $carttotal = $carttotal - $tax;
+                $carttotal = $carttotal + $coupon_discout;
                 $grandTotal = $request->payableamount;
-                
+             
 				$clr_cart = \Cart::clear(); 
 				
 				$dat = array();

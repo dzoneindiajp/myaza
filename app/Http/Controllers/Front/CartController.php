@@ -38,7 +38,7 @@ class CartController extends Controller
 
         $carttotal  = $total;
         $tax = ($carttotal / 100) * 1.12;
-        
+        $carttotal = $carttotal - $tax;
         $total = number_format($carttotal, 2);
         $grandTotal = round($carttotal + $tax);
 
@@ -82,8 +82,9 @@ class CartController extends Controller
 
 
         $tax = ($total / 100) * 1.12;
-        $grandTotal = $total + $tax;
 
+        $total = $total - $tax;
+        $grandTotal = $total + $tax;
         $grandTotal = number_format(round($grandTotal), 2);
         $tax = number_format($tax, 2);
         $total = number_format($total, 2);
@@ -98,7 +99,7 @@ class CartController extends Controller
         $cdiscount = \Session::get('coupon_discount');
         $cdiscount = ($cdiscount>0)?$cdiscount:0;
         $grandTotal  = $total-$cdiscount;
-        $tax = $this->getTotalTax();
+        $tax = ($total / 100) * 1.12;
         $total = $total-$tax;
         return response()->json(['qty'=>$totalQty,'carttotal'=>$total,'grandTotal'=>$grandTotal,'tax'=>$tax],200);
     }
@@ -121,7 +122,8 @@ class CartController extends Controller
         $cdiscount = \Session::get('coupon_discount');
         $cdiscount = ($cdiscount>0)?$cdiscount:0;
         $grandTotal  = $total-$cdiscount;
-        $tax = $this->getTotalTax();
+        // $tax = $this->getTotalTax();
+        $tax = ($total / 100) * 1.12;
         $total = $total-$tax;
         return response()->json(['itemtotal'=>$itemtotal,'qty'=>$totalQty,'carttotal'=>$total,'grandTotal'=>$grandTotal,'tax'=>$tax],200);
     }
@@ -200,29 +202,47 @@ class CartController extends Controller
            $amount = ($cvalue>0)?$cvalue:$amount;
            if($amount > $coupon->min_cart_amount){
                $discount = 0;
-               if($coupon->discount_type === 1){
+               if($coupon->discount_type == 1){
                     $discount = $coupon->value;
                }else{
-                    $discount = $amount  * ($coupon->value/100) ;
+                    $discount = ($amount/100)  * $coupon->value ;
                }
-              
-               $discount = round(($discount>$coupon->max_discount)?$coupon->max_discount:$discount,2);
-               
+            //    $discount = round(($discount>$coupon->max_discount)?$coupon->max_discount:$discount,2);
+                $discount = round($discount);
+
+            
                \Session::put('coupon', $request->coupon);
                \Session::put('coupon_discount', $discount);
  
+            //    $cdiscount = \Session::get('coupon_discount');
+            //    $total = \Cart::getTotal();
+            //    $cdiscount = ($cdiscount>0)?$cdiscount:0;
+            //    $grandTotal  = $total-$cdiscount;
+            //    $tax = ($grandTotal / 100) * 1.12;
+            //    $grandTotal = number_format($grandTotal + $tax , 2);
+ 
                $cdiscount = \Session::get('coupon_discount');
-               $total = \Cart::getTotal();
-               $cdiscount = ($cdiscount>0)?$cdiscount:0;
-               $grandTotal  = $total-$cdiscount;
-               $tax = ($grandTotal / 100) * 1.12;
-               $grandTotal = number_format($grandTotal + $tax , 2);
+               $carttotal = \Cart::getTotal();
+               $coupon_discount = ($cdiscount>0)?$cdiscount:0;
+               $carttotal  = $carttotal-$coupon_discount;
+               $tax = ($carttotal / 100) * 1.12;
+               $carttotal = $carttotal - $tax;
+               $grandTotal = round($carttotal + $tax);
+               $carttotal = number_format($carttotal + $coupon_discount, 2);
+
+
+                // $carttotal  = $carttotal-$coupon_discount;
+                // $tax = ($carttotal / 100) * 1.12;
+                // $carttotal = $carttotal - $tax;
+                // $grandTotal = $carttotal + $tax;
+                // $carttotal = $carttotal + $coupon_discount;
                return response()->json([
                     'success' => true,
                     'code' => 200,
                     'message' => 'Coupon Apply successfully',
                     'coupon_price' => $discount,
                     'tax' => $tax,
+                    'carttotal' => $carttotal,
                     'grandTotal'=>$grandTotal
                 ]);
 
