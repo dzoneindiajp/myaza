@@ -4,7 +4,7 @@ $curr_route2 = request()->segment(3);
 $attribute_routes = ['colors', 'brands', 'sizes', 'attributes', 'attribute-values', 'map-attributes', 'fit', 'sleeve', 'neck', 'craft', 'collection', 'sale'];
 $product_routes = ['products', 'bulk-product', 'media-library', 'product-category'];
 $order_routes = ['orders', 'bulk-orders'];
-$reports_routes = ['orders'];
+$reports_routes = ['orders','products'];
 $setting_routes = ['page', 'company-detail', 'social-media'];
 $user_routes = ['permissions', 'roles', 'users'];
 ?>
@@ -494,6 +494,15 @@ $user_routes = ['permissions', 'roles', 'users'];
                                 <i class="fa-fw nav-icon fas fa-archive"></i>
                                 <p>
                                     Orders Report
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e($curr_route2 == 'products' ? 'active' : ''); ?>"
+                                href="<?php echo e(route('admin.reports.products')); ?>">
+                                <i class="fa-fw nav-icon fas fa-archive"></i>
+                                <p>
+                                    Products Report
                                 </p>
                             </a>
                         </li>
