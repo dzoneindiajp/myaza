@@ -248,7 +248,9 @@
                 serverSide: true,
                 retrieve: true,
                 scrollX: true,
-                aaSorting: [],
+                aaSorting: [], 
+                dom: 'Bfrtlp',
+                buttons: ['copy', 'excel', 'csv', 'pdf', 'print'],
                 ajax: {
                     url: "<?php echo e(route('admin.reports.products')); ?>",
                     data: function (d) {
