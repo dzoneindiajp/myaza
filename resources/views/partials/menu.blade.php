@@ -527,6 +527,15 @@ $user_routes = ['permissions', 'roles', 'users'];
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $curr_route2 == 'users' ? 'active' : '' }}"
+                                href="{{ route('admin.reports.users') }}">
+                                <i class="fa-fw nav-icon fas fa-archive"></i>
+                                <p>
+                                    Users Report
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

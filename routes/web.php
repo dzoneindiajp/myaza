@@ -481,6 +481,7 @@ Route::delete('city/destroy', [CityController::class, 'massDestroy'])
     Route::get('reports/sales',[ReportCOntroller::class, 'sales'])->name('reports.sales');
     Route::get('reports/orders',[ReportCOntroller::class, 'orders'])->name('reports.orders');
     Route::get('reports/products',[ReportCOntroller::class, 'products'])->name('reports.products');
+    Route::get('reports/users',[ReportCOntroller::class, 'users'])->name('reports.users');
     Route::get('reports/payments',[ReportCOntroller::class, 'payments'])->name('reports.payments');
 });
 Route::group(['prefix' => 'backoffice/profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {

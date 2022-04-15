@@ -12,6 +12,7 @@ use App\Models\UserOrder;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\User;
 
 
 class ReportController extends Controller
@@ -254,21 +255,6 @@ class ReportController extends Controller
 
       $table = Datatables::of($query);
       $table->addColumn('placeholder', '&nbsp;');
-      $table->addColumn('actions', '&nbsp;');
-
-      $table->editColumn('actions', function ($row) {
-          $viewGate = 'product_show';
-          $editGate = 'product_edit';
-          $deleteGate = 'product_delete';
-          $crudRoutePart = 'products';
-          return view('partials.datatablesActions', compact(
-              'viewGate',
-              'editGate',
-              'deleteGate',
-              'crudRoutePart',
-              'row'
-          ));
-      });
 
       $table->editColumn('id', function ($row) {
           $id =  $row->id ? $row->id : '';
@@ -387,7 +373,7 @@ class ReportController extends Controller
       });
 
       $table->rawColumns(['placeholder', 'category', 'sub_category', 'brand', 'front_image']);
-      $table->rawColumns(['actions', 'placeholder', 'category', 'sub_category', 'brand', 'front_image','category_name','name','brand_name','sku_code','mrp_price','sales_price','in_stock','has_varient','view_count','status','id']);
+      $table->rawColumns(['placeholder', 'category', 'sub_category', 'brand', 'front_image','category_name','name','brand_name','sku_code','mrp_price','sales_price','in_stock','has_varient','view_count','status','id']);
 
       return $table->make(true);
     }
@@ -400,4 +386,35 @@ class ReportController extends Controller
     return view('admin.reports.products', compact('categories'));
   }
 
+  public function users(Request $request){
+   
+    if ($request->ajax()) {
+
+      $query = new User;
+      $query = $query->whereNull('deleted_at');
+      if($request->start_date != ""){
+        $start_date = date("Y-m-d", strtotime($request->start_date)).' 00:00:00';
+        $query = $query->where("created_at", ">=", $start_date);
+      }
+      if($request->end_date != ""){
+          $end_date = date("Y-m-d", strtotime($request->end_date)).' 23:59:59';
+          $query = $query->where("created_at", "<=", $end_date);
+      }
+      $query = $query->orderBy('id','desc');
+
+      $table = Datatables::of($query);
+
+      $table->editColumn('created_at', function ($row) {
+        $created_at =  $row->created_at ? date("d-m-Y", strtotime($row->created_at)) : '';
+        return $created_at;
+    });
+
+      $table->rawColumns(['created_at']);
+
+      return $table->make(true);
+    }
+
+    return view('admin.reports.users');
+
+  }
 }
